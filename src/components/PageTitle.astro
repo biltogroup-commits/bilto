@@ -1,0 +1,12 @@
+---
+// h1 van de subpagina's (diensten, regio's, juridische pagina's).
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<h1 class:list={['text-[36px] font-extrabold leading-[1.1] tracking-[-0.02em] text-heading lg:text-[52px]', className]}>
+  <slot />
+</h1>

@@ -1,0 +1,17 @@
+---
+// Kop van een sectie op een lichte achtergrond: klein label + h2.
+// Enkel de twee elementen, geen wrapper — de omringende layout (reveal,
+// marges, extra tekst ernaast) verschilt per sectie en blijft daar.
+interface Props {
+  eyebrow: string;
+  // Extra klassen op de h2 (bv. een max-breedte).
+  class?: string;
+}
+
+const { eyebrow, class: className } = Astro.props;
+---
+
+<p class="font-heading text-[13px] font-semibold uppercase tracking-[0.14em] text-neutral-500">{eyebrow}</p>
+<h2 class:list={['mt-3 text-[30px] font-bold leading-[1.15] tracking-[-0.02em] text-heading lg:text-[44px]', className]}>
+  <slot />
+</h2>

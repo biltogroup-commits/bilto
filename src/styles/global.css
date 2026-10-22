@@ -1,0 +1,274 @@
+@import "tailwindcss";
+
+/* Self-hosted fonts (Fontsource) — subset to the weights actually used */
+@import "@fontsource/manrope/700.css";
+@import "@fontsource/manrope/800.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/600.css";
+
+@theme {
+  /* Kleuren — enige chromatische kleur is goud, alleen op CTA's/accenten */
+  --color-gold: #e5bb57;
+  --color-gold-hover: #d4a63f;
+  --color-gold-active: #c89a34;
+  --color-gold-glow: rgba(229, 187, 87, 0.22);
+
+  --color-ink: #1e1e1e;
+  --color-heading: #222222;
+  --color-sand: #ece9e1;
+
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f0f0ee;
+  --color-neutral-300: #d9d9d6;
+  /* #8a8a85 haalde maar 3.46:1 op wit — onder de WCAG AA-eis van 4.5:1 voor
+     kleine tekst (Lighthouse a11y-audit gaf dit als concrete fout, niet als
+     losse regel). #666663 haalt ≥4.75:1 tegen elke lichte achtergrond die
+     deze site gebruikt (wit, --color-sand, --color-neutral-50 — sand is het
+     krapste geval). Enkel voor tekst op een LICHTE achtergrond: op bg-ink
+     gebruiken we --color-muted-dark (zie Footer/OfferteCta/WaaromBilto-header), want
+     één grijswaarde kan onmogelijk 4.5:1 halen tegen zowel wit als zwart. */
+  --color-neutral-500: #666663;
+  --color-neutral-700: #4a4a48;
+  --color-neutral-900: #1e1e1e;
+
+  /* Op donkere (bg-ink) secties: gedempte tekst (#c9c7c1 haalt ruim 4.5:1
+     tegen ink) en de twee donkere vlakken van het offerteformulier/kaart. */
+  --color-muted-dark: #c9c7c1;
+  --color-surface-dark: #242424;
+  --color-field-dark: #1b1b1b;
+
+  /* Typografie */
+  --font-heading: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* Sectie- en pagina-ritme */
+  --spacing-gutter: 1.25rem; /* 20px mobile */
+  --spacing-gutter-lg: 5rem; /* 80px desktop */
+  --spacing-section: 4rem; /* 64px mobile */
+  --spacing-section-lg: 7.5rem; /* 120px desktop */
+
+  --radius-card: 0.75rem; /* 12px */
+
+  --breakpoint-content: 1280px;
+  --breakpoint-nav: 900px; /* header/mobiel-menu omslagpunt, zie handoff */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-neutral-700);
+    background-color: var(--color-white, #fff);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    color: var(--color-heading);
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ===== Scroll-animaties (iteratie 2) =====
+   ".js-anim" wordt synchroon in <head> gezet (zie BaseLayout) vóór de eerste
+   render. Zonder die klasse — JS uitgeschakeld/gefaald — blijft alles
+   gewoon meteen zichtbaar; er is dus geen no-JS-verminking mogelijk.
+
+   De animatie zelf is een gewone CSS-transition, geen JS/WAAPI: animations.ts
+   zet enkel de klasse ".is-revealed" zodra een element de viewport nadert.
+   De stagger tussen kaarten/items in een [data-reveal-group] komt uit
+   :nth-child hieronder, niet uit JS. Zodra de transitie afloopt, verwijdert
+   het script data-reveal + de klasse weer, zodat dit element weer volledig
+   aan Tailwind's eigen "transition-all duration-200" (bv. de kaart-hover)
+   wordt overgelaten. */
+.js-anim [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition-property: opacity, transform;
+  transition-duration: 600ms;
+  transition-timing-function: ease-out;
+  transition-delay: 0ms;
+}
+
+.js-anim [data-reveal-group] > [data-reveal]:nth-child(2) { transition-delay: 80ms; }
+.js-anim [data-reveal-group] > [data-reveal]:nth-child(3) { transition-delay: 160ms; }
+.js-anim [data-reveal-group] > [data-reveal]:nth-child(4) { transition-delay: 240ms; }
+.js-anim [data-reveal-group] > [data-reveal]:nth-child(5) { transition-delay: 320ms; }
+.js-anim [data-reveal-group] > [data-reveal]:nth-child(6) { transition-delay: 400ms; }
+.js-anim [data-reveal-group] > [data-reveal]:nth-child(7) { transition-delay: 480ms; }
+.js-anim [data-reveal-group] > [data-reveal]:nth-child(8) { transition-delay: 560ms; }
+.js-anim [data-reveal-group] > [data-reveal]:nth-child(9) { transition-delay: 640ms; }
+
+.js-anim [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* prefers-reduced-motion wint altijd: geen verborgen states, geen
+   scroll-gekoppelde lijn-animatie. De JS-kant checkt dit ook en slaat
+   observers/scroll-koppelingen dan over, maar deze CSS is het vangnet. */
+@media (prefers-reduced-motion: reduce) {
+  .js-anim [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+  [data-werkwijze-line] {
+    stroke-dashoffset: 0 !important;
+  }
+}
+
+/* ===== Telefoonnummer — "rinkelende" hover op het icoon =====
+   Enkel het icoon roteert (via group-hover), de tekst zelf doet een gewone
+   kleurtransitie naar goud. prefers-reduced-motion zet animation-duration
+   al globaal op 0.01ms (zie hierboven), dus geen aparte JS-check nodig. */
+@keyframes phone-ring {
+  0%, 100% { rotate: 0deg; }
+  15% { rotate: -18deg; }
+  30% { rotate: 14deg; }
+  45% { rotate: -10deg; }
+  60% { rotate: 6deg; }
+  75% { rotate: -3deg; }
+}
+
+/* Zelfde idee voor het adres: de kaartspeld "valt" en stuitert even na,
+   zoals een pin die op een kaart neerkomt. `translate` i.p.v. transform,
+   om dezelfde reden als phone-ring hierboven. */
+@keyframes pin-bounce {
+  0%, 100% { translate: 0 0; }
+  30% { translate: 0 -5px; }
+  55% { translate: 0 0; }
+  72% { translate: 0 -2px; }
+  86% { translate: 0 0; }
+}
+
+/* ===== Header — transparant + inkrimpend bij scroll (enkel homepage-hero) =====
+   Header.astro rendert de "transparent"-variant alleen op de homepage, waar
+   de balk over de donkere Hero-afbeelding zweeft. Deze override staat
+   bewust buiten @layer, zodat hij de gelaagde Tailwind-utilities op
+   <header> (bg-ink, border, shadow) en de h-[96px] op .header-bar altijd
+   wint — zie de cascade-notitie bovenaan dit bestand.
+   Zonder JS (geen .js-anim) blijft de header gewoon de veilige, altijd
+   leesbare solide balk uit de markup: de transparantie hangt hier bewust
+   af van JS die ook echt draait, niet enkel van de "transparent"-prop. */
+.js-anim header[data-header-transparent] {
+  transition: background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease;
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.js-anim header[data-header-transparent] .header-bar {
+  transition: height 300ms ease;
+}
+.js-anim header[data-header-transparent].header-scrolled {
+  background-color: var(--color-ink);
+  border-color: rgb(255 255 255 / 0.1);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.js-anim header[data-header-transparent].header-scrolled .header-bar {
+  height: 72px;
+}
+
+/* ===== Volledig-scherm mobiel menu — scroll-lock op de achtergrond =====
+   Puur CSS via :has(), geen JS nodig: zodra de verborgen checkbox
+   (#mobile-nav-toggle) aan staat, mag de pagina erachter niet meescrollen
+   terwijl het witte paneel (100dvh, z-50) eroverheen ligt. */
+body:has(#mobile-nav-toggle:checked) {
+  overflow: hidden;
+}
+
+/* ===== Volledig-scherm mobiel menu — gestaggerde link-intro =====
+   Zelfde checkbox-toggle als hierboven, nu gebruikt om elke navigatielink
+   een eigen vertraagde fade+schuif te geven zodra het paneel opent — puur
+   CSS, geen JS. De links staan zelf in de normale flow (het paneel regelt
+   zichtbaarheid), dus dit is enkel een opacity/transform-overgang op de
+   links zelf, niet op het paneel. */
+#mobile-menu-panel nav a {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 320ms ease, transform 320ms ease;
+}
+#mobile-nav-toggle:checked ~ #mobile-menu-panel nav a {
+  opacity: 1;
+  transform: none;
+}
+#mobile-nav-toggle:checked ~ #mobile-menu-panel nav a:nth-child(2) { transition-delay: 40ms; }
+#mobile-nav-toggle:checked ~ #mobile-menu-panel nav a:nth-child(3) { transition-delay: 80ms; }
+#mobile-nav-toggle:checked ~ #mobile-menu-panel nav a:nth-child(4) { transition-delay: 120ms; }
+#mobile-nav-toggle:checked ~ #mobile-menu-panel nav a:nth-child(5) { transition-delay: 160ms; }
+
+/* ===== Realisaties — filterbare galerij =====
+   initGalleryFilter() (animations.ts) toont/verbergt items op categorie.
+   De overgang is een gewone CSS-transition; na afloop zet het script
+   display:none op verborgen items zodat de grid niet met lege plekken
+   blijft zitten (zie transitionend-afhandeling daar). */
+[data-gallery-grid] > * {
+  transition: opacity 250ms ease, transform 250ms ease;
+}
+.gallery-item-hidden {
+  opacity: 0;
+  transform: scale(0.96);
+  pointer-events: none;
+}
+
+/* ===== Diensten-kaarten — afgesneden hoek =====
+   Verwijst naar de hoekige "B" in het logo (steiger + schuin dak), zodat
+   die vorm nog ergens anders op de site terugkomt dan alleen in het
+   merkmerk zelf. calc() i.p.v. vaste coördinaten, want clip-path: path()
+   ondersteunt geen percentages en de kaarthoogte is niet vast.
+   border-radius (rounded-card) blijft intact op de drie andere hoeken:
+   de polygon volgt de rechte hoek bij (0,0)/(100%,0)/(0,100%), wat de
+   afronding daar niet wegknipt — enkel de rechtsonder-hoek wijkt af van
+   een gewone rechthoek. */
+.corner-cut {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%);
+}
+
+/* ===== FAQ — zacht openklappen i.p.v. abrupt springen =====
+   Native <details> opent/sluit standaard instant (geen height om te
+   animeren: de inhoud is er gewoon meteen of niet). ::details-content +
+   interpolate-size is de nieuwe, puur-CSS manier om dat wél te animeren —
+   geen JS, geen vaste max-height-gok. Enkel ondersteund in recentere
+   Chromium/Safari; @supports zorgt dat oudere browsers (o.a. Firefox,
+   nog geen steun) gewoon terugvallen op het bestaande instante gedrag
+   hierboven — nooit kapot, enkel minder vloeiend. */
+@supports (interpolate-size: allow-keywords) {
+  #faq details {
+    interpolate-size: allow-keywords;
+  }
+  #faq details::details-content {
+    height: 0;
+    overflow: hidden;
+    transition: height 300ms ease, content-visibility 300ms allow-discrete;
+  }
+  #faq details[open]::details-content {
+    height: auto;
+  }
+}

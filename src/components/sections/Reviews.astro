@@ -1,0 +1,79 @@
+---
+import Container from '../Container.astro';
+import SectionHeading from '../SectionHeading.astro';
+import Icon from '../Icon.astro';
+import { reviews, reviewsSummary } from '../../data/reviews';
+---
+
+<section id="reviews" class="bg-sand py-section lg:py-section-lg">
+  <Container>
+    <div class="flex flex-col gap-6 pb-10 lg:flex-row lg:items-end lg:justify-between lg:pb-12">
+      <div>
+        <SectionHeading eyebrow="Reviews">
+          Wat klanten zeggen
+        </SectionHeading>
+      </div>
+      <div class="flex items-center gap-5 self-start rounded-card bg-white px-6 py-4 shadow-[0_2px_8px_rgba(30,30,30,0.04)]">
+        <span class="font-heading text-[32px] font-extrabold text-heading lg:text-[40px]">{reviewsSummary.rating}</span>
+        <span class="h-9 w-px bg-neutral-300"></span>
+        <div>
+          <div class="flex gap-0.5 text-gold">
+            {Array.from({ length: 5 }).map(() => <Icon name="star" class="h-4 w-4" />)}
+          </div>
+          <p class="mt-1 text-[13px] text-neutral-500">{reviewsSummary.count}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="-mx-gutter flex snap-x snap-mandatory gap-6 overflow-x-auto px-gutter pb-4 lg:mx-0 lg:px-0" data-reviews-track>
+      {
+        reviews.map((review) => (
+          <article class="flex w-[clamp(280px,32%,420px)] shrink-0 snap-start flex-col gap-5 rounded-card border border-neutral-100 bg-white p-8">
+            <div class="flex gap-1 text-gold">
+              {Array.from({ length: 5 }).map(() => <Icon name="star" class="h-[18px] w-[18px]" />)}
+            </div>
+            <p class="text-[17px] leading-relaxed text-neutral-700">{review.text}</p>
+            <div class="mt-auto flex items-center gap-3 pt-2">
+              <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-neutral-300 text-[11px] font-medium uppercase text-neutral-700">
+                foto
+              </span>
+              <div>
+                <p class="text-[15px] font-semibold text-heading">{review.name}</p>
+                <p class="text-[13px] text-neutral-500">{review.source}</p>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="mt-8 flex flex-wrap items-center justify-between gap-5">
+      <p class="max-w-2xl text-[13px] text-neutral-500">
+        Teksten, namen en foto's komen van het echte Google-profiel van Bilto.
+      </p>
+      <div class="flex items-center gap-4">
+        <div class="flex gap-2" data-reviews-dots>
+          {
+            reviews.map((_, index) => (
+              <span class:list={['block h-2 w-2 rounded-full', index === 0 ? 'bg-ink' : 'bg-neutral-300']} />
+            ))
+          }
+        </div>
+        <button
+          type="button"
+          aria-label="Vorige review"
+          class="flex h-[52px] w-[52px] items-center justify-center rounded-full border-[1.5px] border-ink transition-colors hover:bg-ink hover:text-white"
+        >
+          <Icon name="arrow-right" class="h-5 w-5 rotate-180" />
+        </button>
+        <button
+          type="button"
+          aria-label="Volgende review"
+          class="flex h-[52px] w-[52px] items-center justify-center rounded-full bg-gold text-ink shadow-[0_8px_22px_var(--color-gold-glow)] transition-colors hover:bg-gold-hover"
+        >
+          <Icon name="arrow-right" class="h-5 w-5" />
+        </button>
+      </div>
+    </div>
+  </Container>
+</section>

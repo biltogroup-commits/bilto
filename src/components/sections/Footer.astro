@@ -1,0 +1,171 @@
+---
+import Container from '../Container.astro';
+import Icon from '../Icon.astro';
+import { company } from '../../data/company';
+import { footerCompanyNav, footerLegalNav } from '../../data/nav';
+import { getRegions, getServices } from '../../lib/content';
+
+const services = await getServices();
+const regions = await getRegions();
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-neutral-700 bg-ink text-white">
+  <Container class="py-section lg:py-section-lg">
+    <div class="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12">
+      <div>
+        <a href="/#top" class="group inline-flex flex-col items-start gap-1.5" aria-label="Bilto — naar boven">
+          <img
+            src="/logo-mark.png"
+            alt=""
+            width="64"
+            height="35"
+            loading="lazy"
+            class="h-[35px] w-auto transition-transform duration-200 ease-out group-hover:scale-110"
+          />
+          <span class="font-heading text-[20px] font-extrabold tracking-[0.16em] text-white">BILTO</span>
+        </a>
+        <p class="mt-4 max-w-[220px] text-[16px] leading-relaxed text-muted-dark">
+          Sterke verbindingen, solide constructies. Familiebedrijf uit Lokeren.
+        </p>
+      </div>
+
+      <div>
+        <p class="font-heading text-[13px] font-semibold uppercase tracking-[0.12em] text-gold">Diensten</p>
+        <ul class="mt-4 flex flex-col gap-3">
+          {
+            services.map((service) => (
+              <li>
+                <a href={`/${service.id}`} class="inline-block text-[15px] text-muted-dark transition-[color,translate] duration-200 hover:translate-x-1 hover:text-gold">
+                  {service.data.title}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <p class="font-heading text-[13px] font-semibold uppercase tracking-[0.12em] text-gold">Bedrijf</p>
+        <ul class="mt-4 flex flex-col gap-3">
+          {
+            footerCompanyNav.map((item) => (
+              <li>
+                <a href={item.href} class="inline-block text-[15px] text-muted-dark transition-[color,translate] duration-200 hover:translate-x-1 hover:text-gold">
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div>
+        <p class="font-heading text-[13px] font-semibold uppercase tracking-[0.12em] text-gold">Contact</p>
+        <ul class="mt-4 flex flex-col gap-3">
+          <li>
+            <a href={company.phoneHref} class="group flex items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold">
+              <Icon name="phone" class="h-4 w-4 text-gold group-hover:animate-[phone-ring_0.5s_ease-in-out]" />
+              {company.phone}
+            </a>
+          </li>
+          <li>
+            <a href={company.emailHref} class="group flex items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold">
+              <Icon
+                name="mail"
+                class="h-4 w-4 text-gold transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:-rotate-6"
+              />
+              {company.email}
+            </a>
+          </li>
+          <li>
+            <a
+              href={company.mapsHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group flex items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold"
+            >
+              <Icon name="pin" class="h-4 w-4 text-gold group-hover:animate-[pin-bounce_0.6s_ease-out]" />
+              {company.address}
+              <span class="sr-only">(opent Google Maps in een nieuw tabblad)</span>
+            </a>
+          </li>
+        </ul>
+        {
+          /* De iframe zit NIET in de HTML: scripts/consent.ts maakt hem pas
+             aan na toestemming voor externe media (Google zet cookies zodra
+             de embed laadt). Tot dan staat hier een placeholder; de link naar
+             Google Maps werkt ook zonder toestemming en zonder JS.
+             Zoekt rechtstreeks op company.address, enkel het land erbij voor
+             een eenduidige zoekopdracht. Geen API-key nodig. */
+        }
+        <div
+          data-consent-media
+          data-src={`https://maps.google.com/maps?q=${encodeURIComponent(`${company.address}, ${company.country}`)}&output=embed`}
+          data-title={`Kaart — ${company.address}`}
+          class="relative mt-5 aspect-video overflow-hidden rounded-card border border-neutral-700 bg-surface-dark"
+        >
+          <div data-consent-placeholder class="flex h-full flex-col items-center justify-center gap-2.5 p-3 text-center">
+            <p class="text-[13px] leading-snug text-muted-dark">Kaart van Google Maps — laadt pas na jouw toestemming.</p>
+            <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+              <button
+                type="button"
+                data-consent-load
+                class="rounded-card bg-gold px-4 py-2 text-[13px] font-semibold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-hover active:translate-y-0"
+              >
+                Kaart laden
+              </button>
+              <a
+                href={company.mapsHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-[13px] text-muted-dark underline decoration-muted-dark/40 underline-offset-4 transition-colors hover:text-gold hover:decoration-gold"
+              >
+                Open in Google Maps
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-14 flex flex-col gap-3 border-t border-neutral-700 pt-8 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-[13px] font-semibold uppercase tracking-[0.12em] text-muted-dark">Actief in</p>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        {
+          regions.map((region) => (
+            <li>
+              <a href={`/regio/${region.id}`} class="text-[14px] text-muted-dark transition-colors hover:text-gold">
+                {region.data.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="mt-8 flex flex-col gap-3 border-t border-neutral-700 pt-6 text-[14px] text-muted-dark sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {company.legalName} — Lokeren · {company.vat}</p>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        {
+          footerLegalNav.map((item) => (
+            <li>
+              <a href={item.href} class="underline decoration-transparent underline-offset-4 transition-colors hover:text-gold hover:decoration-gold">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <button
+            type="button"
+            data-cookie-reopen
+            class="underline decoration-transparent underline-offset-4 transition-colors hover:text-gold hover:decoration-gold"
+          >
+            Cookie-instellingen
+          </button>
+        </li>
+      </ul>
+    </div>
+  </Container>
+</footer>

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import Diensten from '../components/sections/Diensten.astro';
+import OverOns from '../components/sections/OverOns.astro';
+import Werkwijze from '../components/sections/Werkwijze.astro';
+import Realisaties from '../components/sections/Realisaties.astro';
+import WaaromBilto from '../components/sections/WaaromBilto.astro';
+// Reviews-sectie staat er nog wel (src/components/sections/Reviews.astro),
+// maar staat uit: het Google-bedrijfsprofiel (10 reviews) beheert Bilto nog
+// niet zelf. Terugzetten zodra er toegang is: <Reviews /> hieronder toevoegen
+// en src/data/reviews.ts met echte reviews vullen.
+import Instagram from '../components/sections/Instagram.astro';
+import Faq from '../components/sections/Faq.astro';
+import OfferteCta from '../components/sections/OfferteCta.astro';
+---
+
+<BaseLayout
+  title="Bilto — Aannemer in Lokeren en Oost-Vlaanderen"
+  description="Bilto is een familiebedrijf uit Lokeren voor kabelwerken, bouw & renovatie, dakwerken, gevelwerken, pleisterwerken en asbestverwijdering. Vraag een gratis offerte aan."
+  transparentHeader
+>
+  <Hero />
+  <Diensten />
+  <OverOns />
+  <Werkwijze />
+  <Realisaties />
+  <WaaromBilto />
+  <Instagram />
+  <Faq />
+  <OfferteCta />
+</BaseLayout>
+
+<script>
+  // Enkel op de homepage geladen — de andere pagina's hebben deze
+  // secties (en dus deze animaties) niet.
+  import '../scripts/animations';
+</script>

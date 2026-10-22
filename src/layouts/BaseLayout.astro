@@ -1,0 +1,72 @@
+---
+import SEO from '../components/SEO.astro';
+import Header from '../components/sections/Header.astro';
+import Footer from '../components/sections/Footer.astro';
+import MobileBar from '../components/sections/MobileBar.astro';
+import CookieBanner from '../components/CookieBanner.astro';
+import { company } from '../data/company';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  noindex?: boolean;
+  transparentHeader?: boolean;
+}
+
+const { title, description, image, noindex, transparentHeader = false } = Astro.props;
+
+// LocalBusiness JSON-LD. Alleen velden die we ook echt kennen —
+// geen verzonnen openingsuren of coördinaten.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'GeneralContractor',
+  name: company.name,
+  legalName: company.legalName,
+  description: 'Aannemer voor kabelwerken, bouw & renovatie, dakwerken, gevelwerken, pleisterwerken en asbestverwijdering in Lokeren en Oost-Vlaanderen.',
+  telephone: company.phone,
+  email: company.email,
+  url: Astro.site?.href,
+  hasMap: company.mapsHref,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: company.street,
+    postalCode: company.postalCode,
+    addressLocality: company.city,
+    addressRegion: company.region,
+    addressCountry: 'BE',
+  },
+  areaServed: ['Lokeren', 'Gent', 'Sint-Niklaas', 'Dendermonde', 'Aalst', 'Waasland'],
+  vatID: company.vat.replace('BTW ', ''),
+};
+---
+
+<!doctype html>
+<html lang="nl-BE">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#1E1E1E" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <SEO title={title} description={description} image={image} noindex={noindex} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
+    {
+      /* Synchroon en vóór de eerste render: zonder deze klasse blijft
+         [data-reveal] gewoon zichtbaar (zie global.css). Zo is er nooit
+         verborgen content als JS uitblijft of traag laadt. */
+    }
+    <script is:inline>
+      document.documentElement.classList.add('js-anim');
+    </script>
+  </head>
+  <body class="bg-white pb-16 nav:pb-0">
+    <Header transparent={transparentHeader} />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+    <CookieBanner />
+  </body>
+</html>

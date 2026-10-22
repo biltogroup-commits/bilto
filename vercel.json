@@ -1,0 +1,10 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "(.*)\\.vercel\\.app" }],
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+    }
+  ],
+  "crons": [{ "path": "/api/cron/instagram", "schedule": "0 4 * * *" }]
+}

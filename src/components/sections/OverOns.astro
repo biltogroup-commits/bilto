@@ -1,0 +1,67 @@
+---
+import Container from '../Container.astro';
+import SectionHeading from '../SectionHeading.astro';
+import Icon from '../Icon.astro';
+import { overOns } from '../../data/overOns';
+
+// Icoon per teller, in dezelfde volgorde als overOns.counters (jaar ervaring,
+// afgewerkte projecten, klanten komt terug) — puur decoratief, geen nieuwe
+// betekenis, enkel bestaande iconen uit de site-brede set.
+const counterIcons = ['clock', 'check', 'star'] as const;
+---
+
+<section id="over-ons" class="scroll-mt-[100px] bg-sand py-section lg:py-section-lg">
+  <Container>
+    <div class="grid grid-cols-1 items-center gap-12 nav:grid-cols-2 lg:gap-20" data-reveal-group>
+      <div data-reveal class="relative mx-auto w-full max-w-[520px]">
+        {
+          /* Gouden vlak, verschoven achter de foto — geeft de kaart diepte
+             i.p.v. een platte rand. Puur decoratief (aria-hidden), dus geen
+             tekstcontrast-kwestie zoals bij goud-als-tekst elders. */
+        }
+        <div class="absolute -bottom-5 -right-5 h-full w-full rounded-card bg-gold/25" aria-hidden="true" />
+        <div class="relative aspect-[3/4] w-full overflow-hidden rounded-card">
+          <div data-parallax class="absolute inset-x-0 -top-[10%] -bottom-[10%]">
+            {
+              overOns.image.src ? (
+                <img src={overOns.image.src} alt={overOns.image.label} loading="lazy" class="h-full w-full object-cover" />
+              ) : (
+                <div class="flex h-full w-full items-center justify-center border border-neutral-300/70 bg-neutral-300 text-center">
+                  <span class="px-6 text-sm font-medium uppercase tracking-wide text-neutral-700">
+                    {overOns.image.label}
+                  </span>
+                </div>
+              )
+            }
+          </div>
+        </div>
+      </div>
+
+      <div data-reveal class="flex flex-col gap-6">
+        <div>
+          <SectionHeading eyebrow={overOns.eyebrow}>
+            {overOns.heading}
+          </SectionHeading>
+        </div>
+        {overOns.paragraphs.map((paragraph) => <p class="text-[18px] leading-relaxed text-neutral-700">{paragraph}</p>)}
+
+        <div class="mt-4 grid grid-cols-3 gap-6 border-t border-neutral-300 pt-6" data-reveal-group>
+          {
+            overOns.counters.map((counter, i) => (
+              <div class="group w-fit transition-transform duration-200 hover:-translate-y-0.5" data-reveal>
+                <Icon
+                  name={counterIcons[i]}
+                  class="h-5 w-5 text-gold transition-transform duration-300 ease-out group-hover:-rotate-6 group-hover:scale-125"
+                />
+                <p class="mt-2 font-heading text-[32px] font-extrabold text-heading lg:text-[40px]" data-counter>
+                  {counter.value}
+                </p>
+                <p class="mt-1 text-[14px] leading-snug text-neutral-500">{counter.suffix}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>

@@ -1,0 +1,27 @@
+node_modules/
+dist/
+.vercel/
+.astro/
+.env
+.env.*
+!.env.example
+lighthouse-report*
+
+.vercel
+.env*
+
+# Onbewerkte bronbestanden, niet gerefereerd door de site zelf — lokaal
+# gehouden, niet in git om de repo klein te houden.
+public/hero-original.mp4
+public/hero_mobile-original.mp4
+public/logo.jpg
+
+# Lokale werknotities en ontwerpbronnen.
+CLAUDE.md
+.claude/
+HANDOFF.md
+project/
+
+# Gegenereerd door scripts/fetch-instagram.mjs bij elke build.
+public/instagram/
+src/data/instagram.json

@@ -1,0 +1,144 @@
+---
+// Standaard `hidden`: het script hieronder toont de banner enkel als er nog
+// geen keuze bewaard is. Zo flitst hij niet op bij terugkerende bezoekers,
+// en zonder JS verschijnt hij nooit — wat klopt, want zonder JS wordt er
+// ook niets externs geladen (de kaart blijft dan een gewone link).
+---
+
+<div
+  id="cookie-banner"
+  hidden
+  data-state="closed"
+  class="fixed inset-x-0 bottom-16 z-40 translate-y-4 border-t border-neutral-700 bg-ink px-gutter py-5 text-white opacity-0 transition-[opacity,translate] duration-300 ease-out data-[state=open]:translate-y-0 data-[state=open]:opacity-100 nav:bottom-0 lg:px-gutter-lg"
+  role="region"
+  aria-label="Cookiemelding"
+>
+  <div class="mx-auto flex max-w-[1280px] flex-col gap-4">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <p class="max-w-[720px] text-[14px] leading-relaxed text-muted-dark">
+        Deze site gebruikt enkel noodzakelijke opslag om je keuze te onthouden. Externe inhoud zoals de
+        Google Maps-kaart laden we pas na jouw toestemming, omdat Google daarbij cookies plaatst.
+      </p>
+      <div class="flex shrink-0 flex-wrap gap-3">
+        <button
+          type="button"
+          data-cookie-action="settings"
+          aria-expanded="false"
+          aria-controls="cookie-settings"
+          class="rounded-card border border-white/30 px-5 py-3 text-[14px] font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/10 active:translate-y-0"
+        >
+          Instellingen
+        </button>
+        <button
+          type="button"
+          data-cookie-action="reject"
+          class="rounded-card border border-white/30 px-5 py-3 text-[14px] font-semibold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/10 active:translate-y-0"
+        >
+          Weigeren
+        </button>
+        <button
+          type="button"
+          data-cookie-action="accept"
+          class="rounded-card bg-gold px-5 py-3 text-[14px] font-semibold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-hover hover:shadow-[0_10px_24px_var(--color-gold-glow)] active:translate-y-0"
+        >
+          Accepteren
+        </button>
+      </div>
+    </div>
+
+    <div id="cookie-settings" hidden class="flex flex-col gap-4 border-t border-neutral-700 pt-4">
+      <label class="flex cursor-not-allowed items-start gap-3">
+        <input type="checkbox" checked disabled class="mt-1 h-4 w-4 accent-[var(--color-gold)]" />
+        <span class="text-[14px] leading-relaxed text-muted-dark">
+          <span class="font-semibold text-white">Noodzakelijk</span> — altijd aan. Onthoudt enkel je keuze in
+          deze browser, plaatst geen cookie.
+        </span>
+      </label>
+      <label class="flex cursor-pointer items-start gap-3">
+        <input type="checkbox" data-consent-toggle="media" class="mt-1 h-4 w-4 cursor-pointer accent-[var(--color-gold)]" />
+        <span class="text-[14px] leading-relaxed text-muted-dark">
+          <span class="font-semibold text-white">Externe media</span> — de Google Maps-kaart onderaan de pagina.
+          Google plaatst hierbij eigen cookies.
+        </span>
+      </label>
+      <div>
+        <button
+          type="button"
+          data-cookie-action="save"
+          class="rounded-card bg-gold px-5 py-3 text-[14px] font-semibold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-hover active:translate-y-0"
+        >
+          Keuze opslaan
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { applyConsent, readConsent, saveConsent } from '../scripts/consent';
+
+  const banner = document.getElementById('cookie-banner');
+  const settings = document.getElementById('cookie-settings');
+  const settingsButton = banner?.querySelector<HTMLButtonElement>('[data-cookie-action="settings"]');
+  const mediaToggle = banner?.querySelector<HTMLInputElement>('[data-consent-toggle="media"]');
+
+  function setSettingsOpen(open: boolean) {
+    if (!settings || !settingsButton) return;
+    settings.hidden = !open;
+    settingsButton.setAttribute('aria-expanded', String(open));
+  }
+
+  function show({ withSettings = false } = {}) {
+    if (!banner) return;
+    if (mediaToggle) mediaToggle.checked = readConsent()?.media ?? false;
+    setSettingsOpen(withSettings);
+    banner.hidden = false;
+    // Geforceerde reflow zodat de begin-stand (doorzichtig, iets lager)
+    // eerst toegepast is — anders is er niets om vanaf te animeren. Bewust
+    // geen requestAnimationFrame: die pauzeert in een achtergrondtabblad,
+    // waardoor de banner daar onzichtbaar bleef.
+    void banner.offsetWidth;
+    banner.dataset.state = 'open';
+  }
+
+  function hide() {
+    if (!banner) return;
+    banner.dataset.state = 'closed';
+    // Timeout i.p.v. transitionend: bij prefers-reduced-motion of een
+    // al-dichte banner komt er geen transitionend, en dan bleef hij hangen.
+    window.setTimeout(() => {
+      banner.hidden = true;
+    }, 320);
+  }
+
+  function choose(media: boolean) {
+    saveConsent({ media });
+    hide();
+  }
+
+  banner?.addEventListener('click', (event) => {
+    const action = (event.target as HTMLElement).closest<HTMLElement>('[data-cookie-action]')?.dataset.cookieAction;
+    if (action === 'accept') choose(true);
+    else if (action === 'reject') choose(false);
+    else if (action === 'save') choose(mediaToggle?.checked ?? false);
+    else if (action === 'settings') setSettingsOpen(settings?.hidden !== false);
+  });
+
+  // "Kaart laden" op de placeholder zelf: een expliciete klik op die knop
+  // is toestemming voor externe media, dus die bewaren we ook meteen.
+  document.addEventListener('click', (event) => {
+    if ((event.target as HTMLElement).closest('[data-consent-load]')) choose(true);
+  });
+
+  // Keuze herzien (footer-link) — toestemming intrekken moet even
+  // makkelijk zijn als geven.
+  document.addEventListener('click', (event) => {
+    if (!(event.target as HTMLElement).closest('[data-cookie-reopen]')) return;
+    event.preventDefault();
+    show({ withSettings: true });
+  });
+
+  const stored = readConsent();
+  applyConsent(stored);
+  if (!stored) show();
+</script>

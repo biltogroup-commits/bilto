@@ -1,0 +1,77 @@
+---
+// On-demand: leest ?naam= en ?status= uit de query na de POST naar /api/offerte.
+// Werkt zonder JS — dit is een echte server-gerenderde pagina.
+// Alleen met status=verstuurd beloven we een terugbelactie; zonder die
+// status (formulier nog niet gekoppeld, verzending mislukt, honeypot) is de
+// aanvraag NIET aangekomen en sturen we de bezoeker naar telefoon of mail.
+export const prerender = false;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import Icon from '../components/Icon.astro';
+import { company } from '../data/company';
+
+const naam = Astro.url.searchParams.get('naam')?.trim();
+const verstuurd = Astro.url.searchParams.get('status') === 'verstuurd';
+
+const contactButton =
+  'inline-flex items-center gap-2 rounded-card px-[26px] py-[17px] text-[15px] font-bold transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0';
+---
+
+<BaseLayout
+  title={verstuurd ? 'Bedankt voor je aanvraag — Bilto' : 'Neem contact op — Bilto'}
+  description={verstuurd
+    ? 'Je offerteaanvraag is verstuurd. Bilto neemt binnen 24 uur contact met je op.'
+    : 'Je offerteaanvraag kon niet online verstuurd worden. Bel of mail Bilto rechtstreeks.'}
+  noindex
+>
+  <section class="flex min-h-[60vh] items-center bg-ink py-section text-center text-white lg:py-section-lg">
+    <Container class="flex flex-col items-center gap-6">
+      {verstuurd ? (
+        <>
+          <span class="flex h-16 w-16 items-center justify-center rounded-full bg-gold text-ink">
+            <Icon name="check" class="h-8 w-8" />
+          </span>
+          <h1 class="text-[36px] font-extrabold tracking-[-0.02em] text-white lg:text-[44px]">
+            {naam ? `Bedankt, ${naam}` : 'Bedankt voor je aanvraag'}
+          </h1>
+          <p class="max-w-md text-[18px] leading-relaxed text-muted-dark">
+            Je aanvraag is doorgestuurd. We bellen je binnen 24 uur terug.
+          </p>
+          <p class="text-[15px] text-muted-dark">
+            Dringend? Bel meteen naar{' '}
+            <a href={company.phoneHref} class="whitespace-nowrap font-semibold text-gold">{company.phone}</a>.
+          </p>
+          <a
+            href="/#contact"
+            class="mt-4 rounded-card border-[1.5px] border-white px-[26px] py-[17px] text-[15px] font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:translate-y-0"
+          >
+            Nieuwe aanvraag
+          </a>
+        </>
+      ) : (
+        <>
+          <span class="flex h-16 w-16 items-center justify-center rounded-full bg-gold text-ink">
+            <Icon name="phone" class="h-8 w-8" />
+          </span>
+          <h1 class="text-[36px] font-extrabold tracking-[-0.02em] text-white lg:text-[44px]">
+            {naam ? `${naam}, neem even rechtstreeks contact op` : 'Neem even rechtstreeks contact op'}
+          </h1>
+          <p class="max-w-md text-[18px] leading-relaxed text-muted-dark">
+            Je aanvraag kon niet online verstuurd worden. Bel of mail ons, dan helpen we je meteen verder.
+          </p>
+          <div class="mt-2 flex flex-wrap justify-center gap-4">
+            <a href={company.phoneHref} class={`${contactButton} bg-gold text-ink hover:bg-gold-hover`}>
+              <Icon name="phone" class="h-5 w-5" />
+              <span class="whitespace-nowrap">{company.phone}</span>
+            </a>
+            <a href={company.emailHref} class={`${contactButton} border-[1.5px] border-white text-white hover:bg-white hover:text-ink`}>
+              <Icon name="mail" class="h-5 w-5" />
+              <span>{company.email}</span>
+            </a>
+          </div>
+        </>
+      )}
+    </Container>
+  </section>
+</BaseLayout>

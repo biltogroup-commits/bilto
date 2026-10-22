@@ -1,0 +1,121 @@
+---
+// Filters en de sleepbare voor/na-vergelijking worden interactief via
+// src/scripts/animations.ts (initGalleryFilter, initBeforeAfter). De actieve
+// filterknop krijgt zijn stijl puur uit aria-pressed — het script zet enkel
+// dat attribuut.
+import Container from '../Container.astro';
+import SectionHeading from '../SectionHeading.astro';
+import Icon from '../Icon.astro';
+import ImagePlaceholder from '../ImagePlaceholder.astro';
+import ShineSweep from '../ShineSweep.astro';
+import { galleryFilters, galleryItems, beforeAfter } from '../../data/gallery';
+
+// Categorie-naam voor onder de titel (zie gallery.ts: geen plaatsnaam meer,
+// enkel de al-bestaande, feitelijk kloppende categorie uit de filters).
+function categoryLabel(value: string) {
+  return galleryFilters.find((filter) => filter.value === value)?.label ?? '';
+}
+---
+
+<section id="realisaties" class="scroll-mt-[100px] bg-neutral-50 py-section lg:py-section-lg">
+  <Container>
+    <div class="flex flex-col gap-4 pb-8 lg:flex-row lg:items-end lg:justify-between lg:pb-10" data-reveal>
+      <div>
+        <SectionHeading eyebrow="Realisaties">
+          Werk uit de regio
+        </SectionHeading>
+      </div>
+      <p class="text-[15px] font-medium text-neutral-500" data-gallery-count>
+        {galleryItems.length} van {galleryItems.length} projecten
+      </p>
+    </div>
+
+    <div class="mb-8 flex flex-wrap gap-2.5" role="group" aria-label="Filter realisaties op categorie">
+      {
+        galleryFilters.map((filter, index) => (
+          <button
+            type="button"
+            data-filter={filter.value}
+            aria-pressed={index === 0}
+            class="rounded-full border border-neutral-300 px-5 py-3 text-[14px] font-medium text-neutral-700 transition-all duration-150 hover:border-neutral-500 active:scale-95 aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-white aria-pressed:hover:border-ink"
+          >
+            {filter.label}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" data-gallery-grid data-reveal-group>
+      {
+        galleryItems.map((item) => (
+          <a
+            href="#realisaties"
+            data-category={item.category}
+            data-reveal
+            class="group overflow-hidden rounded-card border border-neutral-100 bg-white transition-all duration-200 hover:-translate-y-1.5 hover:border-gold hover:shadow-[0_16px_32px_rgba(30,30,30,0.10)]"
+          >
+            <div class="relative overflow-hidden">
+              <ImagePlaceholder
+                label={item.image.label}
+                ratio={item.image.ratio}
+                src={item.image.src}
+                class="rounded-none transition-transform duration-500 ease-out group-hover:scale-[1.06]"
+              />
+              <ShineSweep />
+            </div>
+            <div class="p-4">
+              <p class="text-[16px] font-semibold text-heading">{item.title}</p>
+              <span class="mt-1.5 inline-block rounded-full bg-neutral-100 px-2.5 py-1 text-[12px] font-medium text-neutral-700 transition-colors group-hover:bg-gold/15">
+                {categoryLabel(item.category)}
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+
+    <p class="hidden py-16 text-center text-[16px] text-neutral-500" data-gallery-empty>
+      Geen realisaties gevonden in deze categorie.
+    </p>
+
+    <div class="mt-16 rounded-card border border-neutral-100 bg-white p-6 lg:p-10" data-reveal>
+      <p class="text-[18px] font-bold text-heading">{beforeAfter.title}</p>
+      <p class="mt-1 text-[14px] text-neutral-500">{beforeAfter.hint}</p>
+      <div
+        data-ba
+        class="relative mt-6 aspect-video touch-none select-none overflow-hidden rounded-card cursor-ew-resize"
+      >
+        <img
+          src={beforeAfter.after.src}
+          alt="Na — nieuwe dakbedekking"
+          loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover"
+        />
+        <div data-ba-before style="clip-path: inset(0 50% 0 0)" class="absolute inset-0">
+          <img src={beforeAfter.before.src} alt="Voor — oude dakbedekking" loading="lazy" class="h-full w-full object-cover" />
+        </div>
+        <div
+          data-ba-divider
+          style="left: 50%"
+          class="pointer-events-none absolute inset-y-0 w-0.5 -translate-x-1/2 bg-gold"
+        >
+        </div>
+        <button
+          type="button"
+          data-ba-handle
+          style="left: 50%"
+          class="absolute top-1/2 flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-0 bg-gold text-ink shadow-[0_10px_26px_var(--color-gold-glow)]"
+          role="slider"
+          aria-label="Sleep om voor en na te vergelijken"
+          aria-valuemin="2"
+          aria-valuemax="98"
+          aria-valuenow="50"
+        >
+          <Icon name="move-horizontal" class="h-5 w-5" />
+        </button>
+        <span class="pointer-events-none absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-[12px] font-semibold text-heading">VOOR</span>
+        <span class="pointer-events-none absolute right-3 top-3 rounded-full bg-gold px-3 py-1 text-[12px] font-semibold text-ink">NA</span>
+      </div>
+    </div>
+  </Container>
+</section>

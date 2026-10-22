@@ -1,0 +1,149 @@
+---
+// Werkt volledig zonder JS: gewone POST naar /api/offerte (on-demand route),
+// die bij succes doorstuurt naar de server-gerenderde bedankpagina.
+import Container from '../Container.astro';
+import Icon from '../Icon.astro';
+import { company } from '../../data/company';
+import { getServices } from '../../lib/content';
+
+const services = await getServices();
+
+// Gedeelde stijl van alle formuliervelden en hun labels.
+const field =
+  'rounded-card border border-neutral-700 bg-field-dark transition-[border-color,box-shadow] duration-150 hover:border-neutral-500 px-[18px] py-4 text-[16px] text-white placeholder:text-muted-dark focus:border-[1.5px] focus:border-gold focus:shadow-[0_0_0_4px_var(--color-gold-glow)] focus:outline-none';
+const label = 'text-[13px] font-semibold text-muted-dark';
+---
+
+<section id="contact" class="scroll-mt-20 bg-ink py-section text-white lg:py-section-lg">
+  <Container>
+    <div class="grid grid-cols-1 gap-12 nav:grid-cols-2 lg:gap-20" data-reveal-group>
+      <div data-reveal class="flex flex-col gap-6">
+        <p class="font-heading text-[13px] font-semibold uppercase tracking-[0.14em] text-gold">Gratis offerte</p>
+        <h2 class="text-[30px] font-bold leading-[1.15] tracking-[-0.02em] text-white lg:text-[44px]">
+          Vertel wat je plan is.<br />Wij rekenen het uit.
+        </h2>
+        <p class="max-w-md text-[18px] leading-relaxed text-muted-dark">
+          Stuur je aanvraag door. We nemen contact op om alles verder te bespreken.
+        </p>
+        <div class="flex items-center gap-2.5 text-[17px] font-semibold text-white">
+          <Icon name="clock" class="h-5 w-5 text-gold" />
+          {company.responseTime}
+        </div>
+
+        <div class="mt-4 flex flex-col items-start gap-3 border-t border-neutral-700 pt-6" data-reveal-group>
+          <a
+            href={company.phoneHref}
+            data-reveal
+            class="group flex items-center gap-2.5 font-heading text-[20px] font-semibold text-white transition-colors hover:text-gold"
+          >
+            <Icon name="phone" class="h-4 w-4 text-gold group-hover:animate-[phone-ring_0.5s_ease-in-out]" />
+            {company.phone}
+          </a>
+          <a
+            href={company.emailHref}
+            data-reveal
+            class="group flex items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold"
+          >
+            <Icon
+              name="mail"
+              class="h-4 w-4 text-gold transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:-rotate-6"
+            />
+            {company.email}
+          </a>
+          <a
+            href={company.mapsHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-reveal
+            class="group flex items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold"
+          >
+            <Icon name="pin" class="h-4 w-4 text-gold group-hover:animate-[pin-bounce_0.6s_ease-out]" />
+            <span class="underline decoration-transparent decoration-1 underline-offset-4 transition-colors group-hover:decoration-gold">
+              {company.address}
+            </span>
+            <span class="sr-only">(opent Google Maps in een nieuw tabblad)</span>
+          </a>
+        </div>
+      </div>
+
+      <form
+        method="post"
+        action="/api/offerte"
+        data-reveal
+        class="flex flex-col gap-[18px] rounded-card border border-neutral-700 bg-surface-dark p-8 lg:p-10"
+      >
+        <div class="grid grid-cols-1 gap-[18px] nav:grid-cols-[minmax(180px,1fr)_minmax(180px,1fr)]">
+          <div class="flex flex-col gap-2">
+            <label for="naam" class={label}>Naam *</label>
+            <input
+              id="naam"
+              name="naam"
+              type="text"
+              required
+              autocomplete="name"
+              class={field}
+              placeholder="Je naam"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="telefoon" class={label}>Telefoon *</label>
+            <input
+              id="telefoon"
+              name="telefoon"
+              type="tel"
+              required
+              autocomplete="tel"
+              class={field}
+              placeholder="04XX XX XX XX"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="type" class={label}>Type werk</label>
+          <div class="group relative">
+            <select
+              id="type"
+              name="type"
+              class:list={['w-full appearance-none', field]}
+            >
+              <option value="">Kies een dienst</option>
+              {services.map((service) => <option value={service.id}>{service.data.title}</option>)}
+            </select>
+            <Icon
+              name="chevron-down"
+              class="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-dark transition-colors duration-150 group-hover:text-white group-focus-within:text-gold"
+            />
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <label for="bericht" class={label}>Bericht</label>
+          <textarea
+            id="bericht"
+            name="bericht"
+            rows="4"
+            class:list={['min-h-[120px] resize-y', field]}
+            placeholder="Vertel kort over je project"
+          ></textarea>
+        </div>
+
+        <div class="sr-only">
+          <label for="website">Laat dit veld leeg</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <button
+          type="submit"
+          class="group mt-2 flex items-center justify-center gap-2 rounded-card bg-gold px-7 py-5 text-[17px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-hover hover:shadow-[0_14px_32px_var(--color-gold-glow)] active:translate-y-0"
+        >
+          Verstuur aanvraag
+          <Icon name="arrow-right" class="h-5 w-5 transition-transform duration-200 ease-out group-hover:translate-x-1" />
+        </button>
+        <p class="text-[13px] text-muted-dark">
+          Je gegevens worden enkel gebruikt om je aanvraag te beantwoorden.
+        </p>
+      </form>
+    </div>
+  </Container>
+</section>

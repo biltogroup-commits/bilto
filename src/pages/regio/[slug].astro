@@ -1,0 +1,41 @@
+---
+// Regiopagina's voor lokale SEO: /regio/lokeren, /regio/gent, ...
+// Minimale invulling — wordt later uitgebreid.
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/Container.astro';
+import PageTitle from '../../components/PageTitle.astro';
+
+export async function getStaticPaths() {
+  const regions = await getCollection('regions');
+  return regions.map((region) => ({
+    params: { slug: region.id },
+    props: { region },
+  }));
+}
+
+const { region } = Astro.props;
+const { Content } = await render(region);
+---
+
+<BaseLayout
+  title={`Aannemer in ${region.data.name} — Bilto`}
+  description={region.data.shortDescription ?? `Bilto voert bouw-, dak- en gevelwerken uit in ${region.data.name}.`}
+>
+  <section class="bg-white py-section lg:py-section-lg">
+    <Container class="max-w-2xl">
+      <PageTitle>
+        Aannemer in {region.data.name}
+      </PageTitle>
+      <div class="prose-bilto mt-6 text-[16px] leading-relaxed text-neutral-700">
+        <Content />
+      </div>
+      <a
+        href="/#contact"
+        class="mt-8 inline-block rounded-card bg-gold px-[26px] py-[17px] text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-hover hover:shadow-[0_14px_32px_var(--color-gold-glow)] active:translate-y-0"
+      >
+        Gratis offerte
+      </a>
+    </Container>
+  </section>
+</BaseLayout>

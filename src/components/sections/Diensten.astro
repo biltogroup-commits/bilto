@@ -1,0 +1,58 @@
+---
+import Container from '../Container.astro';
+import SectionHeading from '../SectionHeading.astro';
+import Icon from '../Icon.astro';
+import ImagePlaceholder from '../ImagePlaceholder.astro';
+import ShineSweep from '../ShineSweep.astro';
+import { getServices } from '../../lib/content';
+
+const services = await getServices();
+---
+
+<section id="diensten" class="scroll-mt-[100px] bg-white py-section lg:py-section-lg">
+  <Container>
+    <div class="flex flex-col gap-6 pb-12 lg:flex-row lg:items-end lg:justify-between lg:pb-16" data-reveal>
+      <div>
+        <SectionHeading eyebrow="Diensten" class="max-w-xl">
+          Zes vakgebieden, één aannemer
+        </SectionHeading>
+      </div>
+      <p class="max-w-md text-[18px] leading-relaxed text-neutral-700 lg:text-right">
+        Van kabelwerken tot dak en gevel. Je hoeft geen drie ploegen te coördineren — dat doen wij.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-4 nav:grid-cols-2 lg:grid-cols-3 lg:gap-7" data-reveal-group>
+      {
+        services.map((service) => (
+          <a
+            href={`/${service.id}`}
+            data-reveal
+            class="group flex flex-col overflow-hidden rounded-card border border-neutral-100 bg-white shadow-[0_2px_8px_rgba(30,30,30,0.04)] transition-all duration-200 hover:-translate-y-1.5 hover:border-gold hover:shadow-[0_16px_32px_rgba(30,30,30,0.10)]"
+          >
+            <div class="corner-cut relative overflow-hidden">
+              <ImagePlaceholder
+                label={service.data.image.label}
+                ratio={service.data.image.ratio}
+                src={service.data.image.src}
+                class="rounded-none transition-transform duration-500 ease-out group-hover:scale-[1.08]"
+              />
+              <ShineSweep />
+            </div>
+            <div class="flex flex-1 flex-col gap-3 p-7">
+              <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-ink text-gold transition-transform duration-300 ease-out group-hover:-rotate-6 group-hover:scale-110">
+                <Icon name={service.data.icon} class="h-[22px] w-[22px]" />
+              </span>
+              <h3 class="text-[20px] font-bold leading-snug text-heading lg:text-[24px]">{service.data.title}</h3>
+              <p class="text-[15px] leading-relaxed text-neutral-500">{service.data.shortDescription}</p>
+              <span class="mt-auto flex items-center gap-1 pt-2 text-[15px] font-semibold text-neutral-700 transition-colors group-hover:text-heading">
+                Meer weten
+                <Icon name="arrow-right" class="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+              </span>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </Container>
+</section>

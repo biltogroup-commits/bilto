@@ -1,0 +1,102 @@
+---
+// Laatste Instagram-posts, lokaal gehost (zie scripts/fetch-instagram.mjs).
+// Elke kaart is een gewone link naar de post op Instagram — werkt zonder JS.
+// Met JS speelt een video ter plaatse af: pas bij een klik wordt de <video>
+// aangemaakt, dus tot dan kost een video 0 bytes.
+import Container from '../Container.astro';
+import SectionHeading from '../SectionHeading.astro';
+import Icon from '../Icon.astro';
+import { instagramFeed, instagramProfile } from '../../data/instagram';
+
+// Het raster moet altijd vol zijn (geen gaten): 6 → 2×3 / 3×2, 4 → 2×2 / 4×1,
+// 3 of minder → één rij.
+const all = instagramFeed.posts;
+const posts = all.slice(0, all.length >= 6 ? 6 : all.length >= 4 ? 4 : all.length);
+const gridCols =
+  posts.length === 6
+    ? 'grid-cols-2 lg:grid-cols-3'
+    : posts.length === 4
+      ? 'grid-cols-2 lg:grid-cols-4'
+      : posts.length === 3
+        ? 'grid-cols-3'
+        : 'grid-cols-2 lg:max-w-[760px]';
+---
+
+{
+  posts.length > 0 && (
+    <section id="instagram" class="scroll-mt-[100px] bg-neutral-50 py-section lg:py-section-lg">
+      <Container>
+        <div class="flex flex-col gap-5 pb-8 lg:flex-row lg:items-end lg:justify-between lg:pb-10" data-reveal>
+          <div>
+            <SectionHeading eyebrow="Instagram">
+              Volg ons op de werf
+            </SectionHeading>
+          </div>
+          <a
+            href={instagramProfile.href}
+            target="_blank"
+            rel="noopener"
+            class="group inline-flex items-center gap-2.5 self-start rounded-full border border-neutral-300 bg-white px-5 py-3 text-[15px] font-semibold text-heading transition-all duration-150 hover:-translate-y-0.5 hover:border-gold active:translate-y-0 lg:self-auto"
+          >
+            <Icon name="instagram" class="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
+            @{instagramProfile.handle}
+            <span class="sr-only">(opent Instagram in een nieuw tabblad)</span>
+          </a>
+        </div>
+
+        <div class:list={['grid gap-3 sm:gap-4 lg:gap-6', gridCols]} data-reveal-group>
+          {
+            posts.map((post) => (
+              <figure data-reveal class="group">
+                <a
+                  href={post.permalink}
+                  target="_blank"
+                  rel="noopener"
+                  data-ig-video={post.video ?? undefined}
+                  class="relative block aspect-[3/4] overflow-hidden rounded-card bg-ink transition-all duration-200 hover:-translate-y-1.5 hover:shadow-[0_16px_32px_rgba(30,30,30,0.10)]"
+                >
+                  <img
+                    src={post.poster}
+                    alt={post.caption || 'Instagram-post van Bilto'}
+                    loading="lazy"
+                    class="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                  />
+                  {post.type === 'video' && (
+                    <span class="pointer-events-none absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-gold text-ink shadow-[0_10px_26px_var(--color-gold-glow)] transition-transform duration-200 group-hover:scale-110">
+                      <Icon name="play" class="ml-0.5 h-6 w-6" />
+                    </span>
+                  )}
+                  <span class="sr-only">
+                    {post.video ? 'Video afspelen' : 'Bekijk op Instagram (nieuw tabblad)'}
+                  </span>
+                </a>
+                {post.caption && (
+                  <figcaption class="mt-2.5 line-clamp-2 text-[14px] leading-snug text-neutral-700">{post.caption}</figcaption>
+                )}
+              </figure>
+            ))
+          }
+        </div>
+      </Container>
+    </section>
+  )
+}
+
+<script>
+  // Klik op een videokaart → de poster wordt vervangen door de video zelf.
+  // Zonder JS (of met ctrl/cmd-klik) blijft het een link naar Instagram.
+  document.querySelectorAll<HTMLAnchorElement>('a[data-ig-video]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey) return;
+      event.preventDefault();
+      const video = document.createElement('video');
+      video.src = link.dataset.igVideo!;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.className = 'aspect-[3/4] w-full rounded-card bg-ink object-contain';
+      link.replaceWith(video);
+      video.focus();
+    });
+  });
+</script>

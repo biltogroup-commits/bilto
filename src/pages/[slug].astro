@@ -1,0 +1,53 @@
+---
+// Dienst-subpagina's: /dakwerken, /gevelwerken, /kabelwerken, /renovatie,
+// /pleisterwerken, /asbestverwijdering — één pagina per bestand in
+// src/content/services/. Nog een minimale invulling (titel, tekst, foto, CTA).
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import PageTitle from '../components/PageTitle.astro';
+import ImagePlaceholder from '../components/ImagePlaceholder.astro';
+import Icon from '../components/Icon.astro';
+
+export async function getStaticPaths() {
+  const services = await getCollection('services');
+  return services.map((service) => ({
+    params: { slug: service.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const { Content } = await render(service);
+---
+
+<BaseLayout
+  title={`${service.data.title} — Bilto`}
+  description={service.data.shortDescription}
+>
+  <section class="bg-white py-section lg:py-section-lg">
+    <Container class="grid grid-cols-1 gap-10 nav:grid-cols-2 lg:gap-16">
+      <div>
+        <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-ink text-gold">
+          <Icon name={service.data.icon} class="h-[22px] w-[22px]" />
+        </span>
+        <PageTitle class="mt-5">
+          {service.data.title}
+        </PageTitle>
+        <p class="mt-4 max-w-lg text-[18px] leading-relaxed text-neutral-700">
+          {service.data.shortDescription}
+        </p>
+        <div class="prose-bilto mt-6 max-w-lg text-[16px] leading-relaxed text-neutral-700">
+          <Content />
+        </div>
+        <a
+          href="/#contact"
+          class="mt-8 inline-block rounded-card bg-gold px-[26px] py-[17px] text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-hover hover:shadow-[0_14px_32px_var(--color-gold-glow)] active:translate-y-0"
+        >
+          Gratis offerte
+        </a>
+      </div>
+      <ImagePlaceholder label={service.data.image.label} ratio={service.data.image.ratio} src={service.data.image.src} />
+    </Container>
+  </section>
+</BaseLayout>

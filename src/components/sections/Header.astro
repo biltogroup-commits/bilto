@@ -1,0 +1,159 @@
+---
+// Standaard: donkere balk, altijd leesbaar, altijd sticky (veilig op elke
+// pagina, ook zonder JS). De transparante top-state + inkrimpen bij scroll
+// (props.transparent) is enkel voor de homepage, waar de header over de
+// donkere Hero-afbeelding zweeft — zie global.css ("Header — transparant +
+// inkrimpend") en animations.ts (initHeaderScroll). Op elke andere pagina
+// (geen hero eronder) blijft de balk gewoon solide en sticky.
+import Icon from '../Icon.astro';
+import { company } from '../../data/company';
+import { desktopNav, mobileNav } from '../../data/nav';
+import { getServices } from '../../lib/content';
+
+interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = false } = Astro.props;
+
+const services = await getServices();
+---
+
+<header
+  class:list={[
+    'z-50 border-b border-white/10 bg-ink text-white shadow-[0_1px_0_rgba(255,255,255,0.06)]',
+    transparent ? 'fixed inset-x-0 top-0' : 'sticky top-0',
+  ]}
+  data-header-transparent={transparent ? '' : undefined}
+>
+  <div class="header-bar mx-auto flex h-[96px] w-full max-w-[1440px] items-center justify-between gap-6 px-gutter lg:px-gutter-lg">
+    <a href="/#top" class="group flex shrink-0 flex-col items-center justify-center gap-0.5">
+      <img
+        src="/logo-mark.png"
+        alt=""
+        width="48"
+        height="26"
+        class="h-[26px] w-auto transition-transform duration-200 ease-out group-hover:scale-110"
+      />
+      <span class="font-heading text-[13px] font-extrabold tracking-[0.16em]">BILTO</span>
+    </a>
+
+    <nav class="hidden items-center gap-8 nav:flex" aria-label="Hoofdnavigatie">
+      <div class="group relative">
+        <button
+          type="button"
+          class="relative flex items-center gap-1.5 py-2 text-[15px] font-medium text-gold outline-none focus-visible:rounded-sm"
+          aria-haspopup="true"
+        >
+          Diensten
+          <Icon name="chevron-down" class="h-4 w-4 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180" />
+          <span class="absolute inset-x-0 -bottom-0.5 h-[2px] origin-left scale-x-0 bg-gold transition-transform duration-300 ease-out group-hover:scale-x-100 group-focus-within:scale-x-100" />
+        </button>
+        <div
+          class="invisible absolute left-1/2 top-full w-[min(640px,84vw)] -translate-x-1/2 -translate-y-2 pt-3 opacity-0 transition-[opacity,visibility,transform] duration-200 ease-out group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
+        >
+          <div class="grid grid-cols-2 gap-1 rounded-card border border-neutral-100 bg-white p-5 text-left shadow-[0_18px_40px_rgba(30,30,30,0.12)]">
+            {
+              services.map((service) => (
+                <a
+                  href={`/${service.id}`}
+                  class="rounded-[10px] p-2.5 transition-colors hover:bg-neutral-100"
+                >
+                  <span class="block text-[15px] font-semibold text-heading">{service.data.title}</span>
+                  <span class="mt-0.5 block text-[13px] text-neutral-500">{service.data.shortDescription}</span>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      {
+        desktopNav.slice(1).map((item) => (
+          <a href={item.href} class="group relative py-2 text-[15px] font-medium text-white/90 transition-colors hover:text-white">
+            {item.label}
+            <span class="absolute inset-x-0 -bottom-0.5 h-[2px] origin-left scale-x-0 bg-gold transition-transform duration-300 ease-out group-hover:scale-x-100" />
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="hidden items-center gap-6 nav:flex">
+      <a href={company.phoneHref} class="group flex items-center gap-2 text-[15px] font-medium text-white transition-colors hover:text-gold">
+        <Icon name="phone" class="h-4 w-4 text-gold group-hover:animate-[phone-ring_0.5s_ease-in-out]" />
+        {company.phone}
+      </a>
+      <a
+        href="/#contact"
+        class="rounded-card bg-gold px-[22px] py-[15px] text-[15px] font-bold text-ink shadow-[0_10px_26px_var(--color-gold-glow)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-hover hover:shadow-[0_14px_32px_var(--color-gold-glow)] active:translate-y-0"
+      >
+        Gratis offerte
+      </a>
+    </div>
+
+    <input type="checkbox" id="mobile-nav-toggle" class="peer sr-only" />
+    <label
+      for="mobile-nav-toggle"
+      class="flex h-11 w-11 items-center justify-center rounded-card bg-gold text-ink nav:hidden"
+    >
+      <span class="sr-only">Open menu</span>
+      <Icon name="menu" class="h-6 w-6" />
+    </label>
+
+    <div
+      id="mobile-menu-panel"
+      class="invisible fixed inset-0 z-50 flex flex-col overflow-y-auto bg-white px-6 py-7 text-ink opacity-0 transition-[opacity,visibility] duration-200 peer-checked:visible peer-checked:opacity-100 nav:hidden"
+    >
+      <div class="mb-6 flex items-center justify-between">
+        <span class="font-heading text-[18px] font-extrabold tracking-[0.16em] text-heading">BILTO</span>
+        <label for="mobile-nav-toggle" class="flex h-9 w-9 items-center justify-center rounded-full bg-neutral-100">
+          <span class="sr-only">Sluit menu</span>
+          <Icon name="x" class="h-5 w-5" />
+        </label>
+      </div>
+      <nav class="flex flex-1 flex-col gap-1" aria-label="Mobiele navigatie">
+        {
+          mobileNav.map((item) => (
+            <a
+              href={item.href}
+              class="rounded-[10px] px-2 py-3 font-heading text-[20px] font-semibold text-heading transition-colors hover:bg-neutral-100"
+            >
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+      <div class="mt-auto flex flex-col gap-3 border-t border-neutral-100 pt-5">
+        <a href={company.phoneHref} class="group flex items-center gap-2 text-[15px] font-medium text-heading">
+          <Icon name="phone" class="h-4 w-4 text-gold group-hover:animate-[phone-ring_0.5s_ease-in-out]" />
+          {company.phone}
+        </a>
+        <a href={company.emailHref} class="flex items-center gap-2 text-[15px] font-medium text-heading">
+          <Icon name="mail" class="h-4 w-4 text-gold" />
+          {company.email}
+        </a>
+        <a
+          href="/#contact"
+          class="mt-2 rounded-card bg-gold px-[22px] py-[15px] text-center text-[15px] font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-hover hover:shadow-[0_10px_24px_var(--color-gold-glow)] active:translate-y-0"
+        >
+          Gratis offerte
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Volledig-scherm menu sluit zichzelf niet bij het volgen van een
+  // ankerlink (de checkbox-toggle blijft "checked" bij same-page scroll,
+  // er is geen paginaherlaad om hem te resetten) — zonder dit blijft het
+  // witte paneel na een tik op bv. "Diensten" over de hele pagina hangen.
+  const toggle = document.getElementById('mobile-nav-toggle');
+  if (toggle instanceof HTMLInputElement) {
+    document.querySelectorAll('#mobile-menu-panel a').forEach((link) => {
+      link.addEventListener('click', () => {
+        toggle.checked = false;
+      });
+    });
+  }
+</script>

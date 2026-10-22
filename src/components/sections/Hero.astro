@@ -1,0 +1,116 @@
+---
+import Container from '../Container.astro';
+import Icon from '../Icon.astro';
+import { hero } from '../../data/hero';
+import { values } from '../../data/company';
+---
+
+<section id="top" class="relative overflow-hidden bg-ink text-white">
+  <div class="absolute inset-0 overflow-hidden">
+    <div data-parallax class="absolute inset-x-0 -top-[8%] -bottom-[8%]">
+      {
+        /* poster i.p.v. een CSS-achtergrond: geprobeerd met een per-breakpoint
+           CSS background-image zodat mobiel en desktop elk hun eigen affiche
+           tonen, maar dat kostte ~800ms LCP — zonder poster-attribuut wacht
+           Chrome op het eerste écht gedecodeerde videoframe in plaats van
+           meteen een los beeld te tonen. Het poster-attribuut zelf kan geen
+           breakpoints, dus kiezen we hier bewust de mobiele affiche (dat is
+           ook wat Lighthouse mobile audit ziet); op desktop staat 'm heel
+           even iets te breed gecrops via object-cover voor de video laadt. */
+      }
+      <video
+        class="h-full w-full object-cover"
+        poster={hero.video.mobile.poster}
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        data-hero-video
+      >
+        <source src={hero.video.desktop.src} media="(min-width: 900px)" type="video/mp4" />
+        <source src={hero.video.mobile.src} type="video/mp4" />
+      </video>
+    </div>
+    <div
+      class="absolute inset-0"
+      style="background: linear-gradient(100deg, rgba(20,20,20,0.94) 0%, rgba(20,20,20,0.80) 40%, rgba(20,20,20,0.30) 72%, rgba(20,20,20,0.12) 100%);"
+    >
+    </div>
+  </div>
+
+  {
+    /* pt-[160px] = 64px eigen ruimte + 96px voor de fixed header (die
+       transparant over de Hero zweeft — zie Header.astro `transparent`).
+       Zonder die 96px erbij eet de header rechtstreeks in op de ruimte die
+       justify-end normaal boven de tekst laat: de header staat niet meer in
+       de document-flow, dus zijn hoogte moet hier expliciet terugkomen,
+       anders komt "LOKEREN · OOST-VLAANDEREN" er te dicht onder te staan. */
+  }
+  <Container class="relative flex min-h-[min(88vh,820px)] flex-col justify-end pb-0 pt-[160px]">
+    {
+      /* data-reveal hier is hetzelfde scroll-reveal-systeem als de rest van
+         de pagina (zie animations.ts/global.css) — maar omdat de hero al
+         vanaf scrollY 0 in beeld is, vuurt de IntersectionObserver meteen
+         bij het laden. Geeft zo een gestaggerde intro zonder extra JS. */
+    }
+    <div class="flex max-w-[840px] flex-col gap-7 pb-16" data-reveal-group>
+      <p class="font-heading text-[13px] font-semibold uppercase tracking-[0.14em] text-gold" data-reveal>
+        {hero.eyebrow}
+      </p>
+      <h1
+        class="text-[36px] font-extrabold leading-[1.08] tracking-[-0.03em] text-white lg:text-[64px]"
+        data-reveal
+      >
+        {hero.headingLine1}<br />
+        <span class="text-gold">{hero.headingLine2}</span>
+      </h1>
+      <p class="max-w-[640px] text-[20px] leading-relaxed text-[#E4E1DA]" data-reveal>
+        {hero.subhead}
+      </p>
+      <div class="flex flex-wrap gap-4" data-reveal>
+        <a
+          href={hero.primaryCta.href}
+          class="whitespace-nowrap rounded-card bg-gold px-[30px] py-[20px] text-[16px] font-bold text-ink shadow-[0_12px_30px_var(--color-gold-glow)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-gold-hover hover:shadow-[0_18px_38px_var(--color-gold-glow)] active:translate-y-0"
+        >
+          {hero.primaryCta.label}
+        </a>
+        <a
+          href={hero.secondaryCta.href}
+          class="whitespace-nowrap rounded-card border-[1.5px] border-white px-[30px] py-[20px] text-[16px] font-bold text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:text-ink active:translate-y-0"
+        >
+          {hero.secondaryCta.label}
+        </a>
+      </div>
+
+      {
+        /* flex-col op mobiel i.p.v. flex-wrap: bij 2 items per rij staat de
+           tweede kolom door de wisselende tekstbreedte per rij nooit mooi
+           uitgelijnd. Vanaf nav: is de 840px-kolom breed genoeg voor alle
+           items op één rij, dus daar wél een gewone rij.
+           data-reveal-group/-reveal hier is genest in de hero's eigen groep
+           hierboven — elk vinkje krijgt zo zijn eigen gestaggerde intro
+           (nth-child uit dezelfde CSS-regel als de rest van de site) i.p.v.
+           als één blok mee te faden met de rest van de hero. */
+      }
+      <div
+        class="mt-1 flex flex-col gap-y-3 border-t border-white/15 pt-6 nav:flex-row nav:flex-wrap nav:items-center nav:gap-x-7"
+        data-reveal-group
+      >
+        {
+          values.map((value) => (
+            <div class="group flex w-fit items-center gap-2.5 transition-transform duration-200 hover:-translate-y-0.5" data-reveal>
+              <Icon
+                name="check"
+                class="h-4 w-4 shrink-0 text-gold transition-transform duration-200 group-hover:scale-125"
+              />
+              <span class="text-[15px] font-semibold text-white transition-colors duration-200 group-hover:text-gold">
+                {value}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Container>
+</section>

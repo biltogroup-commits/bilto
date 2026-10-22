@@ -1,0 +1,9 @@
+---
+// Diagonaal lichtaccent dat bij hover over een foto "veegt" (Diensten- en
+// Realisaties-kaarten). Puur CSS: één transition van -translate-x-full naar
+// translate-x-full laat de band vanzelf door het midden lopen. Geskewed zodat
+// het als een lichtstraal oogt i.p.v. een rechte balk.
+// Vereist een `group` op de kaart en `relative overflow-hidden` op de ouder.
+---
+
+<span class="pointer-events-none absolute inset-0 -translate-x-full skew-x-[-20deg] bg-gradient-to-r from-transparent via-white/35 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"></span>
