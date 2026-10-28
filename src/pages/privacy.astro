@@ -1,0 +1,25 @@
+---
+// Privacyverklaring — de tekst staat in src/legal/privacyverklaring.md,
+// zodat een wijziging enkel dat bestand raakt. Ook gebruikt als
+// privacy-URL voor de leadformulieren in Meta-advertenties.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import PageTitle from '../components/PageTitle.astro';
+import { Content } from '../legal/privacyverklaring.md';
+---
+
+<BaseLayout
+  title="Privacyverklaring — Bilto"
+  description="Welke persoonsgegevens Bilto BV verwerkt, waarom, hoe lang en welke rechten u heeft."
+>
+  <section class="bg-white py-section lg:py-section-lg">
+    <Container class="max-w-2xl">
+      <PageTitle>
+        Privacyverklaring – Bilto BV
+      </PageTitle>
+      <div class="prose-bilto mt-6 text-[16px] leading-relaxed text-neutral-700">
+        <Content />
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

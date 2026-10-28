@@ -27,6 +27,6 @@ export const footerCompanyNav = [
 // Juridische links — onderaan de footer naast ©, niet tussen de gewone
 // bedrijfsnavigatie.
 export const footerLegalNav = [
-  { label: 'Privacybeleid', href: '/privacybeleid' },
+  { label: 'Privacyverklaring', href: '/privacy' },
   { label: 'Algemene voorwaarden', href: '/algemene-voorwaarden' },
 ] as const;
