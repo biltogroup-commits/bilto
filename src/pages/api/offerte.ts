@@ -13,10 +13,13 @@ export const POST: APIRoute = async ({ request, url }) => {
     return Response.redirect(new URL('/offerte-bedankt', url), 303);
   }
 
-  const naam = String(data.get('naam') ?? '').trim();
-  const telefoon = String(data.get('telefoon') ?? '').trim();
-  const type = String(data.get('type') ?? '').trim();
-  const bericht = String(data.get('bericht') ?? '').trim();
+  // Ingekort tot een redelijke lengte; regeleinden uit naam/telefoon weg,
+  // want die komen in het onderwerp van de mail.
+  const veld = (key: string, max: number) => String(data.get(key) ?? '').trim().slice(0, max);
+  const naam = veld('naam', 100).replace(/[\r\n]+/g, ' ');
+  const telefoon = veld('telefoon', 40).replace(/[\r\n]+/g, ' ');
+  const type = veld('type', 60);
+  const bericht = veld('bericht', 3000);
 
   if (!naam || !telefoon) {
     // Normaal al tegengehouden door de "required"-velden in de browser;
