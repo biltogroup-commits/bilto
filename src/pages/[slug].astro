@@ -6,6 +6,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/Container.astro';
 import PageTitle from '../components/PageTitle.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import ImagePlaceholder from '../components/ImagePlaceholder.astro';
 import Icon from '../components/Icon.astro';
 
@@ -28,6 +29,7 @@ const { Content } = await render(service);
   <section class="bg-white py-section lg:py-section-lg">
     <Container class="grid grid-cols-1 gap-10 nav:grid-cols-2 lg:gap-16">
       <div>
+        <Breadcrumbs items={[{ label: service.data.title }]} class="mb-6" />
         <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-ink text-gold">
           <Icon name={service.data.icon} class="h-[22px] w-[22px]" />
         </span>

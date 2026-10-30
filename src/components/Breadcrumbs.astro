@@ -1,0 +1,57 @@
+---
+// Kruimelpad van de subpagina's: zichtbaar boven de h1 én als JSON-LD
+// BreadcrumbList. De eerste stap (Home) wordt automatisch toegevoegd; de
+// laatste stap is de huidige pagina en heeft geen link.
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+const crumbs: Crumb[] = [{ label: 'Home', href: '/' }, ...items];
+const site = Astro.site ?? new URL(Astro.url.origin);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: crumbs.map((crumb, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: crumb.label,
+    item: new URL(crumb.href ?? Astro.url.pathname, site).href,
+  })),
+};
+---
+
+<nav aria-label="Kruimelpad" class={className}>
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 text-[14px] text-neutral-500">
+    {
+      crumbs.map((crumb, index) => {
+        const isLast = index === crumbs.length - 1;
+        return (
+          <li class="flex items-center gap-2">
+            {isLast ? (
+              <span aria-current="page" class="font-semibold text-heading">
+                {crumb.label}
+              </span>
+            ) : (
+              <a
+                href={crumb.href}
+                class="underline decoration-transparent underline-offset-4 transition-colors duration-150 hover:text-heading hover:decoration-gold"
+              >
+                {crumb.label}
+              </a>
+            )}
+            {!isLast && <span aria-hidden="true">/</span>}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />

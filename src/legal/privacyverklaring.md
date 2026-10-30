@@ -1,4 +1,4 @@
-Laatst bijgewerkt: 28 oktober 2026
+Laatst bijgewerkt: 31 oktober 2026
 
 Bilto BV, Mosten 7A, 9160 Lokeren, België, ondernemingsnummer / btw BE 1011.433.945 (hierna "Bilto", "wij"), hecht belang aan uw privacy. In deze verklaring leggen we uit welke persoonsgegevens we verwerken, waarom en hoe lang.
 
@@ -35,9 +35,17 @@ Wij verkopen uw gegevens nooit. We delen ze enkel met:
 
 ## 5. Uw rechten
 
-U kunt uw gegevens altijd inkijken, laten verbeteren of laten verwijderen, en u kunt zich verzetten tegen de verwerking. Stuur hiervoor een e-mail naar [administratie@bilto.be](mailto:administratie@bilto.be). U heeft ook het recht een klacht in te dienen bij de Gegevensbeschermingsautoriteit ([www.gegevensbeschermingsautoriteit.be](https://www.gegevensbeschermingsautoriteit.be)).
+U kunt uw gegevens altijd inkijken, laten verbeteren of laten verwijderen, en u kunt zich verzetten tegen de verwerking. Stuur hiervoor een e-mail naar [administratie@bilto.be](mailto:administratie@bilto.be). U kunt ook vragen om de verwerking te beperken of uw gegevens in een gangbaar formaat te ontvangen. U heeft ook het recht een klacht in te dienen bij de Gegevensbeschermingsautoriteit ([www.gegevensbeschermingsautoriteit.be](https://www.gegevensbeschermingsautoriteit.be)).
 
-## 6. Contact
+## 6. Onze website en cookies
+
+Onze website wordt gehost door Vercel Inc. Bij elk bezoek verwerkt de server technische gegevens zoals uw IP-adres, browser en de opgevraagde pagina, voor de beveiliging en de werking van de site. Wat u in het offerteformulier invult, sturen we via de e-maildienst Resend naar ons eigen e-mailadres.
+
+Onze website plaatst zelf geen cookies. Uw keuze in de cookiemelding bewaren we enkel in uw browser. De kaart van Google Maps laden we pas nadat u daarvoor toestemming geeft; vanaf dat moment kan Google cookies plaatsen. De Instagram-berichten op onze site staan op onze eigen server: bij uw bezoek wordt geen verbinding met Meta gemaakt.
+
+Sommige dienstverleners (Vercel, Resend, Google, Meta) kunnen gegevens buiten de Europese Economische Ruimte verwerken, telkens met de waarborgen die de AVG voorschrijft (zoals het EU-VS-gegevensprivacykader of standaardcontractbepalingen).
+
+## 7. Contact
 
 Bilto BV – Mosten 7A, 9160 Lokeren<br>
 E-mail: [info@bilto.be](mailto:info@bilto.be) – [administratie@bilto.be](mailto:administratie@bilto.be)<br>

@@ -5,6 +5,7 @@ import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../../components/Container.astro';
 import PageTitle from '../../components/PageTitle.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 
 export async function getStaticPaths() {
   const regions = await getCollection('regions');
@@ -24,6 +25,7 @@ const { Content } = await render(region);
 >
   <section class="bg-white py-section lg:py-section-lg">
     <Container class="max-w-2xl">
+      <Breadcrumbs items={[{ label: `Aannemer in ${region.data.name}` }]} class="mb-6" />
       <PageTitle>
         Aannemer in {region.data.name}
       </PageTitle>
