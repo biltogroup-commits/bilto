@@ -22,6 +22,7 @@ const { title, description, image, noindex, transparentHeader = false } = Astro.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'GeneralContractor',
+  '@id': Astro.site ? new URL('/#bedrijf', Astro.site).href : undefined,
   name: company.name,
   legalName: company.legalName,
   description: 'Aannemer voor kabelwerken, bouw & renovatie, dakwerken, gevelwerken, pleisterwerken en asbestverwijdering in Lokeren en Oost-Vlaanderen.',
@@ -37,7 +38,7 @@ const jsonLd = {
     addressRegion: company.region,
     addressCountry: 'BE',
   },
-  areaServed: ['Lokeren', 'Gent', 'Sint-Niklaas', 'Dendermonde', 'Aalst', 'Waasland'],
+  areaServed: company.areaServed,
   vatID: company.vat.replace('BTW ', ''),
 };
 ---

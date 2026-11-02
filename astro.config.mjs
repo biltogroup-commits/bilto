@@ -20,9 +20,9 @@ function contentSources(pathname) {
   if (pathname === '/') {
     return ['src/pages/index.astro', 'src/data', 'src/components/sections', 'src/content/services'];
   }
-  const regio = pathname.match(/^\/regio\/([^/]+)\/$/);
+  const regio = pathname.match(/^\/regio\/([^/]+)$/);
   if (regio) return [`src/content/regions/${regio[1]}.md`, 'src/pages/regio/[slug].astro'];
-  const dienst = pathname.match(/^\/([^/]+)\/$/);
+  const dienst = pathname.match(/^\/([^/]+)$/);
   if (dienst) return [`src/content/services/${dienst[1]}.md`, 'src/pages/[slug].astro'];
   return [];
 }
@@ -30,6 +30,8 @@ function contentSources(pathname) {
 export default defineConfig({
   site: 'https://www.bilto-group.be',
   output: 'static',
+  // Eén vorm per URL: /dakwerken (zonder slash); /dakwerken/ krijgt een 308.
+  trailingSlash: 'never',
   // Oude URL van de privacypagina (stond in de footer tot 2026-10-28).
   redirects: {
     '/privacybeleid': '/privacy',
@@ -40,9 +42,7 @@ export default defineConfig({
       // Enkel inhoudspagina's in de sitemap: geen bedankpagina, geen oude
       // privacy-URL (redirect) en geen juridische pagina's.
       filter: (page) =>
-        !['/offerte-bedankt/', '/privacybeleid/', '/privacy/', '/algemene-voorwaarden/'].some((path) =>
-          page.endsWith(path),
-        ),
+        !['/offerte-bedankt', '/privacybeleid', '/privacy', '/algemene-voorwaarden'].includes(new URL(page).pathname.replace(/\/$/, '')),
       serialize: (item) => {
         const sources = contentSources(new URL(item.url).pathname);
         const lastmod = sources.length ? lastCommitDate(sources) : undefined;
