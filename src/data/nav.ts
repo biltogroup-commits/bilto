@@ -21,6 +21,7 @@ export const footerCompanyNav = [
   { label: 'Over ons', href: '/#over-ons' },
   { label: 'Realisaties', href: '/#realisaties' },
   { label: 'Werkwijze', href: '/#werkwijze' },
+  { label: 'Advies', href: '/advies' },
   { label: 'Contact', href: '/#contact' },
 ] as const;
 

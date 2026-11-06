@@ -1,6 +1,6 @@
 ---
 // Interne links naar de dienstpagina's, onderaan de subpagina's.
-// Op een dienstpagina: `huidig` laat de dienst zelf weg.
+// Op een dienstpagina: `huidig` laat de dienst zelf weg; `alleen` beperkt de lijst.
 import Container from './Container.astro';
 import SectionHeading from './SectionHeading.astro';
 import Icon from './Icon.astro';
@@ -10,10 +10,14 @@ interface Props {
   eyebrow: string;
   titel: string;
   huidig?: string;
+  // Enkel deze diensten tonen (bv. de diensten bij een adviesartikel).
+  alleen?: string[];
 }
 
-const { eyebrow, titel, huidig } = Astro.props;
-const services = (await getServices()).filter((service) => service.id !== huidig);
+const { eyebrow, titel, huidig, alleen } = Astro.props;
+const services = (await getServices()).filter(
+  (service) => service.id !== huidig && (!alleen || alleen.includes(service.id)),
+);
 ---
 
 <section class="bg-neutral-50 py-section lg:py-section-lg">

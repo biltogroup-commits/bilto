@@ -37,4 +37,19 @@ const regions = defineCollection({
   }),
 });
 
-export const collections = { services, regions };
+// Adviesartikels (/advies/{slug}): uitleg over regels en premies, enkel op
+// basis van officiële bronnen. `gecontroleerd` = datum waarop alle feiten
+// opnieuw tegen de bronnen zijn nagekeken (zichtbaar + dateModified).
+const artikels = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/artikels' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    gepubliceerd: z.coerce.date(),
+    gecontroleerd: z.coerce.date(),
+    diensten: z.array(z.string()).default([]),
+    bronnen: z.array(z.object({ titel: z.string(), url: z.url() })).min(1),
+  }),
+});
+
+export const collections = { services, regions, artikels };

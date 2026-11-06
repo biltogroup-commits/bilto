@@ -6,6 +6,12 @@ export async function getServices() {
   return (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 }
 
+export async function getArtikels() {
+  return (await getCollection('artikels')).sort(
+    (a, b) => b.data.gepubliceerd.getTime() - a.data.gepubliceerd.getTime(),
+  );
+}
+
 export async function getRegions() {
   return (await getCollection('regions')).sort((a, b) => a.data.order - b.data.order);
 }
