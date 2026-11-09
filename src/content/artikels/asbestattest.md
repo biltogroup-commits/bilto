@@ -13,6 +13,8 @@ bronnen:
     url: "https://ovam.vlaanderen.be/een-asbestattest-wat-nu"
   - titel: "OVAM — Ondersteuning voor particulieren bij asbestverwijdering"
     url: "https://ovam.vlaanderen.be/ondersteuning-en-subsidies-voor-particulieren"
+  - titel: "Vlaanderen.be — Mijn VerbouwPremie voor dak"
+    url: "https://www.vlaanderen.be/bouwen-wonen-en-energie/bouwen-en-verbouwen/premies-voor-renovatie/mijn-verbouwpremie/mijn-verbouwpremie-voor-dak"
   - titel: "Fluvius — Premie asbestverwijdering van niet-verwarmde gebouwen met plaatsing van zonnepanelen"
     url: "https://www.fluvius.be/nl/premies/asbestverwijdering-niet-verwarmde-gebouwen-plaatsing-zonnepanelen"
 ---
@@ -77,7 +79,7 @@ Ga je renoveren, dan is dat het goede moment om asbest mee te verwijderen. Een s
 ## Welke steun bestaat er?
 
 - **Ophaling aan huis:** via je gemeente of afvalintercommunale laat je asbestcement ophalen met zakken (30 of 40 euro) of een container (170 euro). Op de website van OVAM vind je met je postcode welk project bij jou loopt.
-- **Mijn VerbouwPremie:** plaats je isolatie, dan kan je een bijkomende premie voor asbestverwijdering aanvragen. Een aannemer moet het asbest verwijderen en het bedrag hangt af van je inkomen. De regels zijn op 1 maart 2026 gewijzigd; controleer de huidige voorwaarden op vlaanderen.be.
+- **Mijn VerbouwPremie:** isoleer je tegelijk het dak, dan krijg je 8 euro per m² extra voor de asbestverwijdering door een aannemer. Sinds 1 maart 2026 kan dat alleen nog voor eigenaar-bewoners in inkomenscategorie 3 en 4 en voor verhuurders via een woonmaatschappij. Meer uitleg in [Premie voor dak- en gevelisolatie in 2026](/advies/premie-dak-gevelisolatie).
 - **Premie van Fluvius voor niet-verwarmde gebouwen:** voor een asbestdak op een losstaand, niet-verwarmd gebouw zoals een garage, schuur of stal, als je daarna zonnepanelen legt op minstens 10% van de verwijderde dakoppervlakte. Je kan de premie aanvragen tot 31 december 2029. Volgens OVAM moet een aannemer met een opleidingsattest "eenvoudige handelingen" het asbest verwijderen.
 
 ## Asbest laten verwijderen
