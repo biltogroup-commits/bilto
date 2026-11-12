@@ -2,8 +2,11 @@
 // src/pages/api/offerte.ts, zodat het kanaal hier kan wisselen zonder de
 // route of de bedankpagina aan te raken.
 //
-// Kanaal: Resend (EU), domein bilto-group.be. Env var (Vercel, Production):
+// Kanaal: Resend (EU), domein bilto-group.be. Env vars (Vercel, Production):
 //   RESEND_API_KEY  aangemaakt via Vercel → Integrations → Resend
+//   OFFERTE_KOPIE   optioneel: extra adres(sen), komma-gescheiden, dat elke
+//                   aanvraag als verborgen kopie (bcc) krijgt — reserve voor
+//                   als het hoofdadres een tijd geen mail ontvangt.
 import { getEntry } from 'astro:content';
 import { company } from '../data/company';
 
@@ -16,6 +19,13 @@ export interface OfferteAanvraag {
 
 const AFZENDER = 'Bilto website <noreply@bilto-group.be>';
 const ONTVANGER = company.email;
+
+function kopieAdressen(): string[] {
+  return (process.env.OFFERTE_KOPIE ?? '')
+    .split(',')
+    .map((adres) => adres.trim())
+    .filter((adres) => adres.includes('@'));
+}
 
 /** Naam van de gekozen dienst (het formulier stuurt het id van de collectie). */
 async function dienstNaam(type: string): Promise<string> {
@@ -54,6 +64,7 @@ export async function verstuurAanvraag(aanvraag: OfferteAanvraag): Promise<boole
       body: JSON.stringify({
         from: AFZENDER,
         to: ONTVANGER,
+        ...(kopieAdressen().length > 0 && { bcc: kopieAdressen() }),
         subject: `Offerteaanvraag: ${aanvraag.naam} (${dienst})`,
         text: tekst,
       }),
