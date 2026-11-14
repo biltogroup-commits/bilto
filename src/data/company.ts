@@ -23,7 +23,9 @@ export const company = {
   mapsHref: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${address}, ${country}`)}`,
   vat: 'BTW BE 1011.433.945',
   responseTime: 'Antwoord binnen 24 uur',
-  areaServed: ['Lokeren', 'Gent', 'Sint-Niklaas', 'Dendermonde', 'Aalst', 'Waasland'],
+  // Werkgebied (bevestigd door de klant, 2026-11-14): beide provincies.
+  werkgebied: 'Oost- en West-Vlaanderen',
+  areaServed: ['Oost-Vlaanderen', 'West-Vlaanderen'],
 } as const;
 
 export const values = [

@@ -12,6 +12,3 @@ export async function getArtikels() {
   );
 }
 
-export async function getRegions() {
-  return (await getCollection('regions')).sort((a, b) => a.data.order - b.data.order);
-}

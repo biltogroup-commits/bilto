@@ -3,10 +3,9 @@ import Container from '../Container.astro';
 import Icon from '../Icon.astro';
 import { company } from '../../data/company';
 import { footerCompanyNav, footerLegalNav } from '../../data/nav';
-import { getRegions, getServices } from '../../lib/content';
+import { getServices } from '../../lib/content';
 
 const services = await getServices();
-const regions = await getRegions();
 const year = new Date().getFullYear();
 ---
 
@@ -130,18 +129,8 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="mt-14 flex flex-col gap-3 border-t border-neutral-700 pt-8 sm:flex-row sm:items-center sm:justify-between">
-      <p class="text-[13px] font-semibold uppercase tracking-[0.12em] text-muted-dark">Actief in</p>
-      <ul class="flex flex-wrap gap-x-6 gap-y-2">
-        {
-          regions.map((region) => (
-            <li>
-              <a href={`/regio/${region.id}`} class="text-[14px] text-muted-dark transition-colors hover:text-gold">
-                {region.data.name}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
+      <p class="text-[13px] font-semibold uppercase tracking-[0.12em] text-muted-dark">Werkgebied</p>
+      <p class="text-[14px] text-muted-dark">{company.werkgebied}, vanuit {company.city}</p>
     </div>
 
     <div class="mt-8 flex flex-col gap-3 border-t border-neutral-700 pt-6 text-[14px] text-muted-dark sm:flex-row sm:items-center sm:justify-between">

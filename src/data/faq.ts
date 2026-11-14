@@ -14,7 +14,7 @@ export const faq = [
   {
     question: 'In welke regio werken jullie?',
     answer:
-      'We zijn gevestigd in Lokeren en werken in heel Oost-Vlaanderen, onder meer in Gent, Sint-Niklaas, Dendermonde, Aalst en de rest van het Waasland.',
+      'We zijn gevestigd in Lokeren en werken in Oost- en West-Vlaanderen.',
   },
   {
     question: 'Hoe verloopt de betaling?',

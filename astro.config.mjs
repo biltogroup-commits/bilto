@@ -23,8 +23,6 @@ function contentSources(pathname) {
   if (pathname === '/advies') return ['src/content/artikels', 'src/pages/advies/index.astro'];
   const artikel = pathname.match(/^\/advies\/([^/]+)$/);
   if (artikel) return [`src/content/artikels/${artikel[1]}.md`, 'src/pages/advies/[slug].astro'];
-  const regio = pathname.match(/^\/regio\/([^/]+)$/);
-  if (regio) return [`src/content/regions/${regio[1]}.md`, 'src/pages/regio/[slug].astro'];
   const dienst = pathname.match(/^\/([^/]+)$/);
   if (dienst) return [`src/content/services/${dienst[1]}.md`, 'src/pages/[slug].astro'];
   return [];

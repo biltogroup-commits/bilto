@@ -1,10 +1,10 @@
 // Tekst en beeld van de hero-sectie.
 export const hero = {
   eyebrow: 'Lokeren · Oost-Vlaanderen',
-  headingLine1: 'Aannemer gezocht in Oost-Vlaanderen?',
+  headingLine1: 'Aannemer gezocht in Oost- of West-Vlaanderen?',
   headingLine2: 'Bilto bouwt betrouwbaar.',
   subhead:
-    'Sterke verbindingen, solide constructies — jouw partner in bouw, renovatie en kabelwerken in Lokeren en omstreken.',
+    'Sterke verbindingen, solide constructies — jouw partner in bouw, renovatie en kabelwerken in Oost- en West-Vlaanderen.',
   primaryCta: { label: 'Gratis offerte', href: '#contact' },
   secondaryCta: { label: 'Bekijk realisaties', href: '#realisaties' },
   // Drone-opnames van een nieuwbouw-woning (horizontaal voor desktop,

@@ -28,7 +28,7 @@ git push         # отправка в master
 
 | Что изменить | Файл |
 |---|---|
-| Адрес, телефон, e-mail, BTW, список городов для Google | `src/data/company.ts` |
+| Адрес, телефон, e-mail, BTW, рабочая зона | `src/data/company.ts` |
 | Главный экран: заголовок, текст, кнопки, видео | `src/data/hero.ts` |
 | Over ons: текст, цифры, фото | `src/data/overOns.ts` |
 | Realisaties и слайдер «до/после» | `src/data/gallery.ts` |
@@ -37,7 +37,6 @@ git push         # отправка в master
 | Таблица сравнения (Waarom Bilto) | `src/data/comparison.ts` |
 | Пункты меню и ссылки в подвале | `src/data/nav.ts` |
 | Страницы услуг | `src/content/services/*.md` |
-| Страницы городов | `src/content/regions/*.md` |
 | Privacyverklaring | `src/legal/privacyverklaring.md` |
 | Algemene voorwaarden | `src/pages/algemene-voorwaarden.astro` |
 
@@ -72,22 +71,9 @@ image:
 
 Новая услуга сама появится на главной, в меню, в подвале и в форме заявки. Заголовок на главной «Zes vakgebieden, één aannemer» находится в `src/components/sections/Diensten.astro`: если услуг станет не шесть, поправьте его там.
 
-## Добавить или изменить город
+## Рабочая зона
 
-Каждый город — один файл в `src/content/regions/`. Адрес страницы: `gent.md` → `/regio/gent`.
-
-```markdown
----
-name: Gent
-order: 2
----
-
-Текст о работах в этом городе.
-```
-
-Новый город сам появится в подвале. Добавьте его и в `areaServed` в `src/data/company.ts`.
-
-Пишите только о реальных объектах. Одинаковые страницы, где меняется лишь название города, вредят позициям в Google.
+Рабочая зона указана в `src/data/company.ts`: `werkgebied` (текст на сайте) и `areaServed` (список для Google). Отдельных страниц городов нет: делать их стоит только с реальными объектами и фото в каждом городе, одинаковые шаблонные страницы вредят позициям в Google.
 
 ## Добавить работу в Realisaties
 

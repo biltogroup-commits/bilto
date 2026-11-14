@@ -26,17 +26,6 @@ const services = defineCollection({
   }),
 });
 
-// Regio's — worden in de footer gelinkt en krijgen later
-// eigen landingspagina's voor lokale SEO.
-const regions = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/regions' }),
-  schema: z.object({
-    name: z.string(),
-    shortDescription: z.string().optional(),
-    order: z.number(),
-  }),
-});
-
 // Adviesartikels (/advies/{slug}): uitleg over regels en premies, enkel op
 // basis van officiële bronnen. `gecontroleerd` = datum waarop alle feiten
 // opnieuw tegen de bronnen zijn nagekeken (zichtbaar + dateModified).
@@ -52,4 +41,4 @@ const artikels = defineCollection({
   }),
 });
 
-export const collections = { services, regions, artikels };
+export const collections = { services, artikels };

@@ -6,5 +6,6 @@
       "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
     }
   ],
-  "crons": [{ "path": "/api/cron/instagram", "schedule": "0 4 * * *" }]
+  "crons": [{ "path": "/api/cron/instagram", "schedule": "0 4 * * *" }],
+  "redirects": [{ "source": "/regio/:slug*", "destination": "/", "permanent": true }]
 }
