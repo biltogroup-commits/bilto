@@ -17,7 +17,7 @@ export const comparison = {
       other: 'aparte firma inhuren voor asbest',
     },
     {
-      bilto: 'Familiebedrijf dat zelf uitvoert',
+      bilto: 'Aannemer die zelf uitvoert',
       other: 'tussenpersoon die je project doorverkoopt',
     },
     {

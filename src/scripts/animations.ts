@@ -67,7 +67,7 @@ function initCounters() {
     const raw = el.textContent?.trim() ?? '';
     // Enkel echte getallen tellen op — placeholders als "[XX]" blijven
     // gewoon staan (zie content-eerlijkheidsregel: geen verzonnen cijfers).
-    const match = raw.match(/^(\d[\d.,]*)(%?)$/);
+    const match = raw.match(/^(\d[\d.,]*)([%+]?)$/);
     if (!match || prefersReducedMotion) return;
 
     const suffix = match[2];
