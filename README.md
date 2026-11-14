@@ -38,7 +38,6 @@ git push         # отправка в master
 | Пункты меню и ссылки в подвале | `src/data/nav.ts` |
 | Страницы услуг | `src/content/services/*.md` |
 | Privacyverklaring | `src/legal/privacyverklaring.md` |
-| Algemene voorwaarden | `src/pages/algemene-voorwaarden.astro` |
 
 В файлах `.ts` меняйте только текст внутри кавычек. Если в тексте есть апостроф, поставьте перед ним обратный слеш: `'foto\'s'`.
 

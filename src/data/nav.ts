@@ -29,5 +29,4 @@ export const footerCompanyNav = [
 // bedrijfsnavigatie.
 export const footerLegalNav = [
   { label: 'Privacyverklaring', href: '/privacy' },
-  { label: 'Algemene voorwaarden', href: '/algemene-voorwaarden' },
 ] as const;

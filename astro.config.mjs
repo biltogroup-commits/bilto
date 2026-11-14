@@ -41,9 +41,9 @@ export default defineConfig({
   integrations: [
     sitemap({
       // Enkel inhoudspagina's in de sitemap: geen bedankpagina, geen oude
-      // privacy-URL (redirect) en geen juridische pagina's.
+      // privacy-URL (redirect) en geen juridische pagina.
       filter: (page) =>
-        !['/offerte-bedankt', '/privacybeleid', '/privacy', '/algemene-voorwaarden'].includes(new URL(page).pathname.replace(/\/$/, '')),
+        !['/offerte-bedankt', '/privacybeleid', '/privacy'].includes(new URL(page).pathname.replace(/\/$/, '')),
       serialize: (item) => {
         const sources = contentSources(new URL(item.url).pathname);
         const lastmod = sources.length ? lastCommitDate(sources) : undefined;
