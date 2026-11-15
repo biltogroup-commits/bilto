@@ -118,7 +118,7 @@ const year = new Date().getFullYear();
                 href={company.mapsHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-[13px] text-muted-dark underline decoration-muted-dark/40 underline-offset-4 transition-colors hover:text-gold hover:decoration-gold"
+                class="inline-block py-1 text-[13px] text-muted-dark underline decoration-muted-dark/40 underline-offset-4 transition-colors hover:text-gold hover:decoration-gold"
               >
                 Open in Google Maps
               </a>
@@ -139,7 +139,7 @@ const year = new Date().getFullYear();
         {
           footerLegalNav.map((item) => (
             <li>
-              <a href={item.href} class="underline decoration-transparent underline-offset-4 transition-colors hover:text-gold hover:decoration-gold">
+              <a href={item.href} class="inline-block py-1 underline decoration-transparent underline-offset-4 transition-colors hover:text-gold hover:decoration-gold">
                 {item.label}
               </a>
             </li>
@@ -149,7 +149,7 @@ const year = new Date().getFullYear();
           <button
             type="button"
             data-cookie-reopen
-            class="underline decoration-transparent underline-offset-4 transition-colors hover:text-gold hover:decoration-gold"
+            class="inline-block py-1 underline decoration-transparent underline-offset-4 transition-colors hover:text-gold hover:decoration-gold"
           >
             Cookie-instellingen
           </button>
