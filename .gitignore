@@ -25,3 +25,6 @@ project/
 # Gegenereerd door scripts/fetch-instagram.mjs bij elke build.
 public/instagram/
 src/data/instagram.json
+
+# Blender-bron van de Over ons-animatie (groot, enkel lokaal)
+3d/

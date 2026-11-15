@@ -53,6 +53,19 @@
   --breakpoint-nav: 900px; /* header/mobiel-menu omslagpunt, zie handoff */
 }
 
+/* Over ons-animatie: de randen vloeien weg in bg-sand (zie OverOns.astro). */
+@layer components {
+  .over-ons-visual {
+    object-fit: cover;
+    --fade-x: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+    --fade-y: linear-gradient(to bottom, transparent, #000 5%, #000 95%, transparent);
+    -webkit-mask-image: var(--fade-x), var(--fade-y);
+    -webkit-mask-composite: source-in;
+    mask-image: var(--fade-x), var(--fade-y);
+    mask-composite: intersect;
+  }
+}
+
 /* Lopende tekst uit Markdown (regiopagina's, privacyverklaring): koppen,
    alinea's en lijsten zonder eigen klassen. In @layer components, zodat
    utilities op dezelfde elementen nog winnen. */

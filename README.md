@@ -30,7 +30,7 @@ git push         # отправка в master
 |---|---|
 | Адрес, телефон, e-mail, BTW, рабочая зона | `src/data/company.ts` |
 | Главный экран: заголовок, текст, кнопки, видео | `src/data/hero.ts` |
-| Over ons: текст, цифры, фото | `src/data/overOns.ts` |
+| Over ons: текст, цифры, анимация | `src/data/overOns.ts` |
 | Realisaties и слайдер «до/после» | `src/data/gallery.ts` |
 | Вопросы и ответы (FAQ) | `src/data/faq.ts` |
 | Шаги работы (Werkwijze) | `src/data/steps.ts` |
@@ -97,7 +97,6 @@ image:
 |---|---|---|
 | Услуги и Realisaties | 900×675 px (4:3) | `public/images/services/`, `public/images/realisaties/` |
 | Слайдер «до/после» | 1200×675 px, оба фото с одного ракурса | `public/images/realisaties/` |
-| Over ons | вертикальное, 3:4, например 675×900 px | `public/images/` |
 
 Формат JPG, желательно до 200 КБ. Тяжёлые фото замедляют сайт. Имя файла — латиницей, без пробелов.
 
@@ -107,6 +106,12 @@ image:
 
 - Лёгкие ролики (720p, примерно до 2 Мбит/с) не пережимайте, только перенесите служебные данные в начало файла: `ffmpeg -i in.mp4 -map 0:v:0 -c copy -movflags +faststart out.mp4`
 - Тяжёлые исходники уменьшайте до 1920 px: `ffmpeg -i in.mp4 -vf scale=1920:-2:flags=lanczos -c:v libx264 -crf 29 -preset slow -pix_fmt yuv420p -movflags +faststart -an out.mp4`
+
+## Анимация в Over ons
+
+Ролик `public/over-ons/renovatie.mp4` (720×960, без звука) сделан в Blender: старый дом получает новую крышу и штукатурку. Рядом две картинки: `renovatie-start.jpg` (первый кадр, виден до запуска) и `renovatie-eind.jpg` (последний кадр, виден без анимации). Фон ролика — точно цвет секции `#ECE9E1`, поэтому рамки нет. Ролик проигрывается один раз, когда блок появляется на экране.
+
+Вместо ролика можно снова поставить фото: в `src/components/sections/OverOns.astro` замените `<video>` на `<img>`.
 
 ## Форма заявок
 

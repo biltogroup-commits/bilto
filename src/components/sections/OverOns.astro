@@ -14,26 +14,25 @@ const counterIcons = ['clock', 'check', 'star'] as const;
     <div class="grid grid-cols-1 items-center gap-12 nav:grid-cols-2 lg:gap-20" data-reveal-group>
       <div data-reveal class="relative mx-auto w-full max-w-[520px]">
         {
-          /* Gouden vlak, verschoven achter de foto — geeft de kaart diepte
-             i.p.v. een platte rand. Puur decoratief (aria-hidden), dus geen
-             tekstcontrast-kwestie zoals bij goud-als-tekst elders. */
+          /* Achtergrond van de video = bg-sand, dus geen kader: de woning staat
+             los in de sectie. Het masker laat de randen wegvloeien, zodat een
+             kleine kleurafwijking door de videocompressie onzichtbaar blijft.
+             Speelt één keer af zodra het blok in beeld komt (animations.ts),
+             nooit bij reduced motion; zonder JS blijft het eindbeeld staan. */
         }
-        <div class="absolute -bottom-5 -right-5 h-full w-full rounded-card bg-gold/25" aria-hidden="true" />
-        <div class="relative aspect-[3/4] w-full overflow-hidden rounded-card">
-          <div data-parallax class="absolute inset-x-0 -top-[10%] -bottom-[10%]">
-            {
-              overOns.image.src ? (
-                <img src={overOns.image.src} alt={overOns.image.label} loading="lazy" class="h-full w-full object-cover" />
-              ) : (
-                <div class="flex h-full w-full items-center justify-center border border-neutral-300/70 bg-neutral-300 text-center">
-                  <span class="px-6 text-sm font-medium uppercase tracking-wide text-neutral-700">
-                    {overOns.image.label}
-                  </span>
-                </div>
-              )
-            }
-          </div>
-        </div>
+        <video
+          class="over-ons-visual aspect-square w-full nav:aspect-[3/4]"
+          src={overOns.visual.video}
+          poster={overOns.visual.posterEnd}
+          data-poster-start={overOns.visual.posterStart}
+          data-play-in-view
+          muted
+          playsinline
+          preload="none"
+          width="720"
+          height="960"
+          aria-label={overOns.visual.label}
+        />
       </div>
 
       <div data-reveal class="flex flex-col gap-6">

@@ -12,11 +12,15 @@ export const overOns = {
     { value: '100+', suffix: 'afgewerkte projecten' },
     { value: '95%', suffix: 'klanten komt terug' },
   ],
-  image: {
-    // Tijdelijke illustratie met een generiek label. Vervangen door een
-    // teamfoto zodra die er is. Formaat 3:4.
-    label: 'Het team van Bilto op de werf',
-    ratio: '3:4' as const,
-    src: '/images/team-bilto-werf.jpg' as string | undefined,
+  // 3D-animatie (Blender, bron in 3d/ — niet in git): een woning krijgt een
+  // nieuw dak en een nieuwe gevel. Illustratie, geen foto van een werf.
+  // Achtergrond = exact --color-sand, zodat het beeld in de sectie opgaat.
+  // posterEnd = laatste beeld (zonder JS en bij reduced motion),
+  // posterStart = eerste beeld (tot de video start). Formaat 3:4.
+  visual: {
+    label: 'Illustratie: een woning krijgt een nieuw dak en een nieuwe gevel',
+    video: '/over-ons/renovatie.mp4',
+    posterStart: '/over-ons/renovatie-start.jpg',
+    posterEnd: '/over-ons/renovatie-eind.jpg',
   },
 };

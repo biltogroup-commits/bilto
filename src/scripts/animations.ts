@@ -272,6 +272,45 @@ function initHeroVideo() {
   });
 }
 
+// Over ons-animatie: speelt enkel terwijl het blok minstens voor de helft in
+// beeld is (wie snel voorbij scrolt, mist niets: hij pauzeert en gaat verder
+// bij terugkomst) en blijft op het laatste beeld staan. Is hij afgelopen en
+// helemaal uit beeld, dan spoelt hij terug, zodat je de verbouwing bij een
+// volgend bezoek aan de sectie opnieuw ziet. In de HTML staat het eindbeeld
+// als poster (zonder JS en bij reduced motion blijft dat staan); met beweging
+// tonen we tot de start het eerste beeld, zodat er geen sprong is.
+function initPlayInView() {
+  if (prefersReducedMotion) return;
+  document.querySelectorAll<HTMLVideoElement>('video[data-play-in-view]').forEach((video) => {
+    const end = video.poster;
+    const start = video.dataset.posterStart;
+    if (start) video.poster = start;
+    let blocked = false;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[entries.length - 1];
+        if (blocked) return;
+        if (entry.intersectionRatio >= 0.5) {
+          if (video.paused && !video.ended) {
+            video.play().catch(() => {
+              // Autoplay geweigerd (bv. energiebesparing): toon het eindbeeld.
+              blocked = true;
+              video.poster = end;
+              observer.disconnect();
+            });
+          }
+        } else if (!video.paused) {
+          video.pause();
+        } else if (!entry.isIntersecting && video.ended) {
+          video.currentTime = 0;
+        }
+      },
+      { threshold: [0, 0.5] },
+    );
+    observer.observe(video);
+  });
+}
+
 // Beveiliging tegen dubbele opstart: als Vite/Astro's dev-HMR dit script
 // opnieuw uitvoert zonder de pagina volledig te herladen (gebeurt bij het
 // bewerken van bestanden terwijl de pagina open staat), zou je zonder deze
@@ -295,4 +334,5 @@ if (!window.__biltoAnimationsInit) {
   initHeaderScroll();
   initGalleryFilter();
   initHeroVideo();
+  initPlayInView();
 }
