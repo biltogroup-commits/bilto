@@ -4,6 +4,7 @@ import Header from '../components/sections/Header.astro';
 import Footer from '../components/sections/Footer.astro';
 import MobileBar from '../components/sections/MobileBar.astro';
 import CookieBanner from '../components/CookieBanner.astro';
+import { instagramProfile } from '../data/instagram';
 import { company } from '../data/company';
 import '../styles/global.css';
 
@@ -26,9 +27,11 @@ const jsonLd = {
   name: company.name,
   legalName: company.legalName,
   description: 'Aannemer voor kabelwerken, bouw & renovatie, dakwerken, gevelwerken, pleisterwerken en asbestverwijdering in Oost- en West-Vlaanderen, vanuit Lokeren.',
-  telephone: company.phone,
+  telephone: company.phoneHref.replace('tel:', ''),
   email: company.email,
   url: Astro.site?.href,
+  image: Astro.site ? new URL('/og-image.jpg', Astro.site).href : undefined,
+  sameAs: [instagramProfile.href],
   hasMap: company.mapsHref,
   address: {
     '@type': 'PostalAddress',

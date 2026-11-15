@@ -82,6 +82,11 @@
     letter-spacing: -0.01em;
   }
 
+  /* Lange URL's (bv. gegevensbeschermingsautoriteit.be) breken op smalle schermen. */
+  .prose-bilto a {
+    overflow-wrap: anywhere;
+  }
+
   .prose-bilto ul {
     padding-left: 1.25rem;
     list-style: disc;

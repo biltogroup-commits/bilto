@@ -1,0 +1,26 @@
+---
+// Pagina voor onbestaande adressen (Vercel geeft er status 404 bij).
+// Leidt bezoekers met een oude of foute link terug naar de diensten en het contact.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/Container.astro';
+import PageTitle from '../components/PageTitle.astro';
+import DienstenLinks from '../components/DienstenLinks.astro';
+import { company } from '../data/company';
+---
+
+<BaseLayout
+  title="Pagina niet gevonden — Bilto"
+  description="Deze pagina bestaat niet (meer). Bekijk onze diensten of neem contact op met Bilto."
+  noindex
+>
+  <section class="bg-white py-section lg:py-section-lg">
+    <Container class="max-w-3xl">
+      <PageTitle>Deze pagina bestaat niet (meer)</PageTitle>
+      <p class="mt-4 max-w-xl text-[18px] leading-relaxed text-neutral-700">
+        Misschien is de link verouderd. Ga naar de <a href="/" class="font-semibold text-heading underline decoration-gold underline-offset-4">startpagina</a>
+        of bel ons op <a href={company.phoneHref} class="font-semibold text-heading underline decoration-gold underline-offset-4">{company.phone}</a>.
+      </p>
+    </Container>
+  </section>
+  <DienstenLinks eyebrow="Diensten" titel="Waarmee kunnen we helpen?" />
+</BaseLayout>

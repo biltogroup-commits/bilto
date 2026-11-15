@@ -43,7 +43,7 @@ export default defineConfig({
       // Enkel inhoudspagina's in de sitemap: geen bedankpagina, geen oude
       // privacy-URL (redirect) en geen juridische pagina.
       filter: (page) =>
-        !['/offerte-bedankt', '/privacybeleid', '/privacy'].includes(new URL(page).pathname.replace(/\/$/, '')),
+        !['/offerte-bedankt', '/privacybeleid', '/privacy', '/404'].includes(new URL(page).pathname.replace(/\/$/, '')),
       serialize: (item) => {
         const sources = contentSources(new URL(item.url).pathname);
         const lastmod = sources.length ? lastCommitDate(sources) : undefined;

@@ -35,7 +35,7 @@ const year = new Date().getFullYear();
           {
             services.map((service) => (
               <li>
-                <a href={`/${service.id}`} class="inline-block text-[15px] text-muted-dark transition-[color,translate] duration-200 hover:translate-x-1 hover:text-gold">
+                <a href={`/${service.id}`} class="inline-block py-0.5 text-[15px] text-muted-dark transition-[color,translate] duration-200 hover:translate-x-1 hover:text-gold">
                   {service.data.title}
                 </a>
               </li>
@@ -50,7 +50,7 @@ const year = new Date().getFullYear();
           {
             footerCompanyNav.map((item) => (
               <li>
-                <a href={item.href} class="inline-block text-[15px] text-muted-dark transition-[color,translate] duration-200 hover:translate-x-1 hover:text-gold">
+                <a href={item.href} class="inline-block py-0.5 text-[15px] text-muted-dark transition-[color,translate] duration-200 hover:translate-x-1 hover:text-gold">
                   {item.label}
                 </a>
               </li>
@@ -63,13 +63,13 @@ const year = new Date().getFullYear();
         <p class="font-heading text-[13px] font-semibold uppercase tracking-[0.12em] text-gold">Contact</p>
         <ul class="mt-4 flex flex-col gap-3">
           <li>
-            <a href={company.phoneHref} class="group flex items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold">
+            <a href={company.phoneHref} class="group flex min-h-6 items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold">
               <Icon name="phone" class="h-4 w-4 text-gold group-hover:animate-[phone-ring_0.5s_ease-in-out]" />
               {company.phone}
             </a>
           </li>
           <li>
-            <a href={company.emailHref} class="group flex items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold">
+            <a href={company.emailHref} class="group flex min-h-6 items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold">
               <Icon
                 name="mail"
                 class="h-4 w-4 text-gold transition-transform duration-200 ease-out group-hover:-translate-y-0.5 group-hover:-rotate-6"
@@ -82,7 +82,7 @@ const year = new Date().getFullYear();
               href={company.mapsHref}
               target="_blank"
               rel="noopener noreferrer"
-              class="group flex items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold"
+              class="group flex min-h-6 items-center gap-2.5 text-[15px] text-muted-dark transition-colors hover:text-gold"
             >
               <Icon name="pin" class="h-4 w-4 text-gold group-hover:animate-[pin-bounce_0.6s_ease-out]" />
               {company.address}
