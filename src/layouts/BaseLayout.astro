@@ -52,7 +52,11 @@ const jsonLd = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#1E1E1E" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Icoon uit het logo van de klant (public/logo.jpg): de B met stelling; het volledige logo is op 16–32 px onleesbaar. -->
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <SEO title={title} description={description} image={image} noindex={noindex} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} is:inline />
     {
